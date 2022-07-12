@@ -1,0 +1,18 @@
+parameters:
+    phpVersion: 70200
+    level: 8
+    paths:
+        - src
+        - tests
+    parallel:
+        maximumNumberOfProcesses: 1
+    checkGenericClassInNonGenericObjectType: false
+    excludePaths:
+        - tests/report/*
+        - tests/TestAsset/*
+        - tests/Integration/TestAsset/*
+    ignoreErrors:
+        - '%Parameter #1 \$time of static method Zaphyr\\Utils\\Date::[\s\S]+\(\) expects DateTime\|[a-zA-Z\|]+, [a-zA-Z0-9\,\<\>\s]+ given.%'
+        - '%Parameter #1 \$[a-zA-Z]+ of static method Zaphyr\\Utils\\Math::[\s\S]+\(\) expects float|int|numeric-string, [a-zA-Z0-9]+ given.%'
+        - '%Parameter #2 \$haystack of static method PHPUnit\\Framework\\Assert::[\s\S]+\(\) expects [a-zA-Z\|]+, array<[a-zA-Z0-9]+>\|null given.%'
+        - '%Call to an undefined method Zaphyr\\Utils\\File::shouldReceive\(\).%'
