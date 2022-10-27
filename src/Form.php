@@ -7,10 +7,7 @@ namespace Zaphyr\Utils;
 use DateTimeInterface;
 
 /**
- * Class Form
- *
- * @package Zaphyr\Utils
- * @author  merloxx <merloxx@zaphyr.org>
+ * @author merloxx <merloxx@zaphyr.org>
  */
 class Form
 {

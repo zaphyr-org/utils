@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Zaphyr\Utils;
 
 /**
- * Class ClassFinder
- *
- * @package Zaphyr\Utils
- * @author  merloxx <merloxx@zaphyr.org>
+ * @author merloxx <merloxx@zaphyr.org>
  */
 class ClassFinder
 {

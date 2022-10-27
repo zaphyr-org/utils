@@ -9,10 +9,7 @@ use DateTimeZone;
 use Zaphyr\Utils\Exceptions\UtilsException;
 
 /**
- * Class Date
- *
- * @package Zaphyr\Utils
- * @author  merloxx <merloxx@zaphyr.org>
+ * @author merloxx <merloxx@zaphyr.org>
  */
 class Date
 {

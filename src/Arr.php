@@ -7,10 +7,7 @@ namespace Zaphyr\Utils;
 use ArrayAccess;
 
 /**
- * Class Arr
- *
- * @package Zaphyr\Utils
- * @author  merloxx <merloxx@zaphyr.org>
+ * @author merloxx <merloxx@zaphyr.org>
  */
 class Arr
 {

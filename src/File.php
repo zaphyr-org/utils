@@ -12,10 +12,7 @@ use SplFileInfo;
 use Zaphyr\Utils\Exceptions\FileNotFoundException;
 
 /**
- * Class File
- *
- * @package Zaphyr\Utils
- * @author  merloxx <merloxx@zaphyr.org>
+ * @author merloxx <merloxx@zaphyr.org>
  */
 class File
 {
