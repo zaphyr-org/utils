@@ -68,7 +68,7 @@ class Filter
 
         $result = $matches[0] ?? 0.0;
 
-        return round($result, $round);
+        return round((float)$result, $round);
     }
 
     /**
