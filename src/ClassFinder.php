@@ -19,7 +19,7 @@ class ClassFinder
         $classes = [];
 
         foreach (glob($directory . '/*.php') as $filename) {
-            $className = self::getClassNameFromFile($filename);
+            $className = self::getClassBasename($filename);
             $namespace = self::getNamespaceFromFile($filename);
 
             $classes[] = $namespace . '\\' . $className;
@@ -29,13 +29,26 @@ class ClassFinder
     }
 
     /**
-     * @param string $filename
+     * @param string|object $class
      *
      * @return string
      */
-    public static function getClassNameFromFile(string $filename): string
+    public static function getClassBasename(string|object $class): string
     {
-        return basename($filename, '.php');
+        $class = is_object($class) ? $class::class : $class;
+
+        return basename(str_replace('\\', '/', $class), '.php');
+    }
+
+    /**
+     * @param string|object $filename
+     *
+     * @return string
+     * @deprecated Will be removed in v3.0. Use "getClassBasename" instead.
+     */
+    public static function getClassNameFromFile(string|object $filename): string
+    {
+        return self::getClassBasename($filename);
     }
 
     /**
@@ -61,7 +74,7 @@ class ClassFinder
             }
 
             if ($hasNamespace) {
-                if (is_array($token) && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                if (is_array($token) && $token[0] === T_NAME_QUALIFIED) {
                     $namespace .= $token[1];
                 } elseif ($token === ';') {
                     $hasNamespace = false;

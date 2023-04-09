@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Zaphyr\UtilsTests;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Zaphyr\Utils\ClassFinder;
+use Zaphyr\Utils\Exceptions\FileNotFoundException;
+use Zaphyr\Utils\Exceptions\UtilsException;
 
 class ClassFinderTest extends TestCase
 {
@@ -16,21 +19,42 @@ class ClassFinderTest extends TestCase
 
     public function testGetClassesFromDirectory(): void
     {
-        $classes = ClassFinder::getClassesFromDirectory(__DIR__);
+        self::assertSame(
+            [
+                FileNotFoundException::class,
+                UtilsException::class
+            ],
+            ClassFinder::getClassesFromDirectory(
+                '/Users/merloxx/PhpstormProjects/zaphyr/repositories/utils/src/Exceptions'
+            )
+        );
+    }
 
-        self::assertGreaterThan(0, count($classes));
+    public function testGetClassesFromDirectoryReturnsEmptyArrayWhenNoResult(): void
+    {
+        self::assertEmpty(ClassFinder::getClassesFromDirectory('empty/path'));
     }
 
     /* -------------------------------------------------
-     * GET CLASS NAME FROM FILE
+     * GET CLASS BASENAME
      * -------------------------------------------------
      */
 
-    public function testGetClassNameFromFile(): void
+    public function testGetClassBasename(): void
     {
-        $className = ClassFinder::getClassNameFromFile(__FILE__);
-
-        self::assertEquals('ClassFinderTest', $className);
+        self::assertSame('ClassFinderTest', ClassFinder::getClassBasename(__FILE__));
+        self::assertSame('ClassFinderTest', ClassFinder::getClassBasename(__CLASS__));
+        self::assertSame('ClassFinderTest', ClassFinder::getClassBasename('ClassFinderTest'));
+        self::assertSame('ClassFinderTest', ClassFinder::getClassBasename('\ClassFinderTest'));
+        self::assertSame('Foo', ClassFinder::getClassBasename('\\\\Foo'));
+        self::assertSame('Baz', ClassFinder::getClassBasename('\Foo\Bar\Baz'));
+        self::assertSame('Baz', ClassFinder::getClassBasename('\Foo/Bar\Baz/'));
+        self::assertSame('ClassFinderTest', ClassFinder::getClassBasename($this));
+        self::assertSame('stdClass', ClassFinder::getClassBasename(new stdClass()));
+        self::assertSame('0', ClassFinder::getClassBasename('0'));
+        self::assertSame('', ClassFinder::getClassBasename(''));
+        self::assertSame('', ClassFinder::getClassBasename('\\'));
+        self::assertSame('', ClassFinder::getClassBasename('//'));
     }
 
     /* -------------------------------------------------
@@ -40,15 +64,16 @@ class ClassFinderTest extends TestCase
 
     public function testGetNamespaceFromFile(): void
     {
-        $namespace = ClassFinder::getNamespaceFromFile(__FILE__);
-
-        self::assertEquals('Zaphyr\UtilsTests', $namespace);
+        self::assertSame('Zaphyr\UtilsTests', ClassFinder::getNamespaceFromFile(__FILE__));
     }
 
     public function testGetNamespaceFromFileReturnsNullWhenNoNamespaceIsPresent(): void
     {
-        $namespace = ClassFinder::getNamespaceFromFile(\dirname(__DIR__) . '/phpunit.xml.dist');
+        self::assertNull(ClassFinder::getNamespaceFromFile(dirname(__DIR__) . '/phpunit.xml.dist'));
+    }
 
-        self::assertNull($namespace);
+    public function testGetNamespaceFromFileReturnsNullWhenFileNotFound(): void
+    {
+        self::assertNull(ClassFinder::getNamespaceFromFile('/file/not/exists'));
     }
 }
