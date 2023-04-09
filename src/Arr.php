@@ -16,34 +16,30 @@ class Arr
      *
      * @return bool
      */
-    public static function accessible($value): bool
+    public static function accessible(mixed $value): bool
     {
         return is_array($value) || $value instanceof ArrayAccess;
     }
 
     /**
      * @param ArrayAccess|array<mixed> $array
-     * @param int|string               $key
+     * @param string|int               $key
      *
      * @return bool
      */
-    public static function exists($array, $key): bool
+    public static function exists(ArrayAccess|array $array, string|int $key): bool
     {
-        if ($array instanceof ArrayAccess) {
-            return $array->offsetExists($key);
-        }
-
-        return array_key_exists($key, $array);
+        return $array instanceof ArrayAccess ? $array->offsetExists($key) : array_key_exists($key, $array);
     }
 
     /**
      * @param array<string, mixed> $array
-     * @param string[]|string      $key
+     * @param string|string[]      $key
      * @param mixed                $value
      *
      * @return array<string, mixed>
      */
-    public static function set(array &$array, $key, $value = null): array
+    public static function set(array &$array, string|array $key, mixed $value = null): array
     {
         if ($value === null && is_array($key)) {
             return $array = $key;
@@ -66,12 +62,12 @@ class Arr
 
     /**
      * @param array<string, mixed> $array
-     * @param string[]|string      $key
+     * @param string|string[]      $key
      * @param mixed                $value
      *
      * @return array<string, mixed>
      */
-    public static function add(array &$array, $key, $value = null): array
+    public static function add(array &$array, string|array $key, mixed $value = null): array
     {
         if (!static::has($array, $key)) {
             static::set($array, $key, $value);
@@ -87,12 +83,8 @@ class Arr
      *
      * @return mixed
      */
-    public static function get($array, ?string $key, $default = null)
+    public static function get(ArrayAccess|array $array, string|null $key = null, mixed $default = null): mixed
     {
-        if (!static::accessible($array)) {
-            return $default;
-        }
-
         if ($key === null) {
             return $array;
         }
@@ -119,7 +111,7 @@ class Arr
      *
      * @return mixed
      */
-    public static function first(array $array, callable $callback = null, $default = null)
+    public static function first(array $array, callable|null $callback = null, mixed $default = null): mixed
     {
         if ($callback === null) {
             if (empty($array)) {
@@ -147,14 +139,10 @@ class Arr
      *
      * @return mixed
      */
-    public static function last(array $array, callable $callback = null, $default = null)
+    public static function last(array $array, callable|null $callback = null, mixed $default = null): mixed
     {
         if ($callback === null) {
-            if (empty($array)) {
-                return $default;
-            }
-
-            return end($array);
+            return empty($array) ? $default : end($array);
         }
 
         return static::first(array_reverse($array, true), $callback, $default);
@@ -162,16 +150,12 @@ class Arr
 
     /**
      * @param ArrayAccess|array<string, mixed> $array
-     * @param string[]|string|null             $key
+     * @param string|string[]                  $key
      *
      * @return bool
      */
-    public static function has($array, $key): bool
+    public static function has(ArrayAccess|array $array, string|array $key): bool
     {
-        if ($key === null) {
-            return false;
-        }
-
         $keys = (array)$key;
 
         if ($keys === []) {
@@ -210,20 +194,20 @@ class Arr
 
     /**
      * @param array<string, mixed> $array
-     * @param string[]|string      $key
+     * @param string|string[]      $key
      *
      * @return array<string, mixed>
      */
-    public static function only(array $array, $key): array
+    public static function only(array $array, string|array $key): array
     {
         return array_intersect_key($array, array_flip((array)$key));
     }
 
     /**
      * @param array<string, mixed>        $array
-     * @param array<string, mixed>|string $keys
+     * @param string|array<string, mixed> $keys
      */
-    public static function forget(array &$array, $keys): void
+    public static function forget(array &$array, string|array $keys): void
     {
         $original = &$array;
         $keys = (array)$keys;
@@ -253,11 +237,11 @@ class Arr
 
     /**
      * @param array<string, mixed> $array
-     * @param string[]|string      $keys
+     * @param string|string[]      $keys
      *
      * @return array<string, mixed>
      */
-    public static function except(array $array, $keys): array
+    public static function except(array $array, string|array $keys): array
     {
         static::forget($array, $keys);
 

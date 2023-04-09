@@ -21,7 +21,7 @@ class ArrTest extends TestCase
      *
      * @dataProvider validArrayAccessibleDataProvider
      */
-    public function testAccessibleReturnsTrue($accessible): void
+    public function testAccessibleReturnsTrue(mixed $accessible): void
     {
         self::assertTrue(Arr::accessible($accessible));
     }
@@ -31,7 +31,7 @@ class ArrTest extends TestCase
      *
      * @dataProvider invalidArrayAccessibleDataProvider
      */
-    public function testAccessibleReturnsFalse($accessible): void
+    public function testAccessibleReturnsFalse(mixed $accessible): void
     {
         self::assertFalse(Arr::accessible($accessible));
     }
@@ -39,7 +39,7 @@ class ArrTest extends TestCase
     /**
      * @return array<string, array<mixed>>
      */
-    public function validArrayAccessibleDataProvider(): array
+    public static function validArrayAccessibleDataProvider(): array
     {
         return [
             'empty-array' => [[]],
@@ -52,7 +52,7 @@ class ArrTest extends TestCase
     /**
      * @return array<string, array<mixed>>
      */
-    public function invalidArrayAccessibleDataProvider(): array
+    public static function invalidArrayAccessibleDataProvider(): array
     {
         return [
             'null' => [null],
@@ -218,7 +218,6 @@ class ArrTest extends TestCase
         );
 
         self::assertNull($first);
-
         self::assertNull(Arr::first([]));
     }
 
@@ -284,7 +283,6 @@ class ArrTest extends TestCase
     {
         self::assertFalse(Arr::has([], 'user'));
         self::assertFalse(Arr::has([], 'country.name'));
-        self::assertFalse(Arr::has([], null));
         self::assertFalse(Arr::has([], []));
         self::assertFalse(Arr::has(new ArrayObject, 'user'));
     }
