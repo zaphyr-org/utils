@@ -54,15 +54,14 @@ class Date
     public const SQL_NULL = '0000-00-00 00:00:00';
 
     /**
-     * @param DateTime|int|string $time
+     * @param DateTime|int|string|null $time
      *
-     * @return int
      * @throws UtilsException
-     *
+     * @return int
      */
-    public static function timestamp($time = null): int
+    public static function timestamp(DateTime|int|string|null $time = null): int
     {
-        if (!$time) {
+        if (empty($time)) {
             return time();
         }
 
@@ -82,31 +81,33 @@ class Date
     }
 
     /**
-     * @param DateTimeZone|string $timezone
+     * @param DateTimeZone|string|null $timezone
      *
      * @return DateTimeZone
      */
-    public static function timezone($timezone = null): DateTimeZone
+    public static function timezone(DateTimeZone|string|null $timezone = null): DateTimeZone
     {
         if ($timezone instanceof DateTimeZone) {
             return $timezone;
         }
 
-        $timezone = $timezone ?: date_default_timezone_get();
+        $timezone = !empty($timezone) ? $timezone : date_default_timezone_get();
 
         return new DateTimeZone($timezone);
     }
 
     /**
-     * @param DateTime|string|null $time
-     * @param null                 $timezone
-     *
-     * @return DateTime
+     * @param DateTime|int|string|null $time
+     * @param DateTimeZone|string|null $timezone
      *
      * @throws UtilsException
+     * @return DateTime
+     *
      */
-    public static function factory($time = null, $timezone = null): DateTime
-    {
+    public static function factory(
+        DateTime|int|string|null $time = null,
+        DateTimeZone|string|null $timezone = null
+    ): DateTime {
         $timezone = self::timezone($timezone);
 
         if ($time instanceof DateTime) {
@@ -119,13 +120,13 @@ class Date
     }
 
     /**
-     * @param DateTime|int|string $time
+     * @param DateTime|int|string|null $time
      *
-     * @return string
      * @throws UtilsException
      *
+     * @return string
      */
-    public static function sqlFormat($time = null): string
+    public static function sqlFormat(DateTime|int|string|null $time = null): string
     {
         return self::factory($time)->format(self::SQL_FORMAT);
     }
@@ -134,24 +135,24 @@ class Date
      * @param DateTime|int|string $time
      * @param string              $format
      *
-     * @return string
-     *
      * @throws UtilsException
      *
+     * @return string
+     *
      */
-    public static function humanReadable($time, string $format = 'd M Y H:i'): string
+    public static function humanReadable(DateTime|int|string $time, string $format = 'd M Y H:i'): string
     {
         return self::factory($time)->format($format);
     }
 
     /**
-     * @param DateTime|int|string $time
+     * @param mixed $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isValid($time): bool
+    public static function isValid(mixed $time): bool
     {
         if ($time) {
             return self::timestamp($time) > 0;
@@ -163,11 +164,11 @@ class Date
     /**
      * @param DateTime|int|string $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isToday($time): bool
+    public static function isToday(DateTime|int|string $time): bool
     {
         return self::factory($time)->format('Y-m-d') === self::factory()->format('Y-m-d');
     }
@@ -175,11 +176,11 @@ class Date
     /**
      * @param DateTime|int|string $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isTomorrow($time): bool
+    public static function isTomorrow(DateTime|int|string $time): bool
     {
         return self::factory($time)->format('Y-m-d') === self::factory('tomorrow')->format('Y-m-d');
     }
@@ -187,11 +188,11 @@ class Date
     /**
      * @param DateTime|int|string $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isThisWeek($time): bool
+    public static function isThisWeek(DateTime|int|string $time): bool
     {
         return self::factory($time)->format('W-Y') === self::factory()->format('W-Y');
     }
@@ -199,11 +200,11 @@ class Date
     /**
      * @param DateTime|int|string $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isThisMonth($time): bool
+    public static function isThisMonth(DateTime|int|string $time): bool
     {
         return self::factory($time)->format('m-Y') === self::factory()->format('m-Y');
     }
@@ -211,11 +212,11 @@ class Date
     /**
      * @param DateTime|string $time
      *
-     * @return bool
      * @throws UtilsException
      *
+     * @return bool
      */
-    public static function isThisYear($time): bool
+    public static function isThisYear(DateTime|string $time): bool
     {
         return self::factory($time)->format('Y') === self::factory()->format('Y');
     }
