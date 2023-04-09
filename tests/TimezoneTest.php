@@ -14,8 +14,74 @@ class TimezoneTest extends TestCase
      * -------------------------------------------------
      */
 
-    public function testGetAllTimezones(): void
+    /**
+     * @param string $continent
+     *
+     * @return void
+     * @dataProvider continentsDataProvider
+     */
+    public function testGetAllTimezones(string $continent): void
     {
-        self::assertSame(count(Timezone::getAllTimezones()), 143);
+        self::assertArrayHasKey($continent, Timezone::getAllTimezones());
+    }
+
+    /* -------------------------------------------------
+     * GET TIMEZONES BY CONTINENT
+     * -------------------------------------------------
+     */
+
+    /**
+     * @param string $continent
+     *
+     * @return void
+     * @dataProvider continentsDataProvider
+     */
+    public function testGetTimezonesByContinent(string $continent): void
+    {
+        self::assertIsArray(Timezone::getTimezonesByContinent($continent));
+    }
+
+    public function testGetTimezonesByContinentReturnsEmptyArrayOnInvalidContinent(): void
+    {
+        self::assertEmpty(Timezone::getTimezonesByContinent('InvalidContinent'));
+    }
+
+    /* -------------------------------------------------
+     * GET TIMEZONE
+     * -------------------------------------------------
+     */
+
+    public function testGetTimezone(): void
+    {
+        self::assertEquals('(UTC+02:00) Berlin', Timezone::getTimezone('Europe', 'Berlin'));
+    }
+
+    public function testGetTimezoneReturnsNullOnInvalidContinent(): void
+    {
+        self::assertNull(Timezone::getTimezone('InvalidContinent', 'Berlin'));
+    }
+
+    public function testGetTimezoneReturnsNullOnInvalidCity(): void
+    {
+        self::assertNull(Timezone::getTimezone('Europe', 'InvalidCity'));
+    }
+
+    /**
+     * @return array<string[]>
+     */
+    public static function continentsDataProvider(): array
+    {
+        return [
+            ['Africa'],
+            ['America'],
+            ['Antarctica'],
+            ['Arctic'],
+            ['Asia'],
+            ['Atlantic'],
+            ['Australia'],
+            ['Europe'],
+            ['Indian'],
+            ['Pacific'],
+        ];
     }
 }
