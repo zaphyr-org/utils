@@ -14,4 +14,3 @@ parameters:
     ignoreErrors:
         - '%Parameter #1 \$[a-zA-Z]+ of static method Zaphyr\\Utils\\Math::[\s\S]+\(\) expects float|int|numeric-string, [a-zA-Z0-9]+ given.%'
         - '%Parameter #2 \$haystack of static method PHPUnit\\Framework\\Assert::[\s\S]+\(\) expects [a-zA-Z\|]+, array<[a-zA-Z0-9]+>\|null given.%'
-        - '%Call to an undefined method Zaphyr\\Utils\\File::shouldReceive\(\).%'

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Zaphyr\UtilsTests;
 
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 use Zaphyr\Utils\Exceptions\FileNotFoundException;
@@ -15,7 +14,7 @@ class FileTest extends TestCase
     /**
      * @var string
      */
-    protected $tempDir;
+    protected string $tempDir;
 
     public function setUp(): void
     {
@@ -408,10 +407,10 @@ class FileTest extends TestCase
     {
         mkdir($foo = $this->tempDir . '/foo');
         file_put_contents($foo . '/foo.txt', 'foo');
-        mkdir($bar = $this->tempDir . '/bar');
-        mkdir($hidden = $this->tempDir . '/.hidden');
+        mkdir($this->tempDir . '/bar');
+        mkdir($this->tempDir . '/.hidden');
 
-        self::assertCount(2, $files = $directories = File::directories($this->tempDir));
+        self::assertCount(2, $files = File::directories($this->tempDir));
         self::assertContainsOnlyInstancesOf(SplFileInfo::class, $files);
     }
 
@@ -419,8 +418,8 @@ class FileTest extends TestCase
     {
         mkdir($foo = $this->tempDir . '/foo');
         file_put_contents($foo . '/foo.txt', 'foo');
-        mkdir($bar = $this->tempDir . '/bar');
-        mkdir($hidden = $this->tempDir . '/.hidden');
+        mkdir($this->tempDir . '/bar');
+        mkdir($this->tempDir . '/.hidden');
 
         self::assertCount(3, $files = File::directories($this->tempDir, true));
         self::assertContainsOnlyInstancesOf(SplFileInfo::class, $files);
@@ -756,15 +755,8 @@ class FileTest extends TestCase
     {
         mkdir($tempDir = $this->tempDir . '/tmp', 0777, true);
         file_put_contents($tempDir . '/foo.txt', 'foo');
-        mkdir($tempDir2 = $this->tempDir . '/tmp2', 0777, true);
 
-        /** @var File $files */
-        $files = Mockery::mock(File::class)->makePartial();
-        $files->shouldReceive('deleteDirectory')
-            ->once()
-            ->andReturn(false);
-
-        self::assertFalse($files->moveDirectory($tempDir, $tempDir2, true));
+        self::assertFalse(File::moveDirectory($tempDir, '/none/existing/dir', true));
     }
 
     /**

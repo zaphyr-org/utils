@@ -20,6 +20,7 @@ class File
      * @param string $path
      *
      * @return bool
+     * @deprecated Will be removed in v3.0. Use PHP built-in function "file_exists"
      */
     public static function exists(string $path): bool
     {
@@ -30,6 +31,7 @@ class File
      * @param string $file
      *
      * @return bool
+     * @deprecated Will be removed in v3.0. Use PHP built-in function "is_file"
      */
     public static function isFile(string $file): bool
     {
@@ -40,6 +42,7 @@ class File
      * @param string $directory
      *
      * @return bool
+     * @deprecated Will be removed in v3.0. Use PHP built-in function "is_dir"
      */
     public static function isDirectory(string $directory): bool
     {
@@ -50,11 +53,11 @@ class File
      * @param string $path
      * @param int    $options
      *
-     * @return string|null
+     * @return array<string, string>|string|null
      */
-    public static function info(string $path, int $options): ?string
+    public static function info(string $path, int $options = PATHINFO_ALL): array|string|null
     {
-        if (!static::exists($path)) {
+        if (!file_exists($path)) {
             return null;
         }
 
@@ -66,9 +69,11 @@ class File
      *
      * @return string|null
      */
-    public static function name(string $path): ?string
+    public static function name(string $path): string|null
     {
-        return static::info($path, PATHINFO_FILENAME);
+        $info = static::info($path, PATHINFO_FILENAME);
+
+        return is_string($info) ? $info : null;
     }
 
     /**
@@ -76,9 +81,11 @@ class File
      *
      * @return string|null
      */
-    public static function basename(string $path): ?string
+    public static function basename(string $path): string|null
     {
-        return static::info($path, PATHINFO_BASENAME);
+        $info = static::info($path, PATHINFO_BASENAME);
+
+        return is_string($info) ? $info : null;
     }
 
     /**
@@ -86,9 +93,11 @@ class File
      *
      * @return string|null
      */
-    public static function dirname(string $path): ?string
+    public static function dirname(string $path): string|null
     {
-        return static::info($path, PATHINFO_DIRNAME);
+        $info = static::info($path, PATHINFO_DIRNAME);
+
+        return is_string($info) ? $info : null;
     }
 
     /**
@@ -96,13 +105,15 @@ class File
      *
      * @return string|null
      */
-    public static function extension(string $file): ?string
+    public static function extension(string $file): string|null
     {
-        if (!static::isFile($file)) {
+        if (!is_file($file)) {
             return null;
         }
 
-        return static::info($file, PATHINFO_EXTENSION);
+        $info = static::info($file, PATHINFO_EXTENSION);
+
+        return is_string($info) ? $info : null;
     }
 
     /**
@@ -110,9 +121,9 @@ class File
      *
      * @return string|null
      */
-    public static function type(string $path): ?string
+    public static function type(string $path): string|null
     {
-        if (!static::exists($path)) {
+        if (!file_exists($path)) {
             return null;
         }
 
@@ -126,9 +137,9 @@ class File
      *
      * @return string|null
      */
-    public static function mimeType(string $path): ?string
+    public static function mimeType(string $path): string|null
     {
-        if (!static::exists($path)) {
+        if (!file_exists($path)) {
             return null;
         }
 
@@ -148,13 +159,9 @@ class File
      *
      * @return int|null
      */
-    public static function size(string $path): ?int
+    public static function size(string $path): int|null
     {
-        if (!static::exists($path)) {
-            return null;
-        }
-
-        return filesize($path);
+        return file_exists($path) ? filesize($path) : null;
     }
 
     /**
@@ -162,9 +169,9 @@ class File
      *
      * @return string|null
      */
-    public static function hash(string $file): ?string
+    public static function hash(string $file): string|null
     {
-        if (!static::isFile($file)) {
+        if (!is_file($file)) {
             return null;
         }
 
@@ -179,7 +186,7 @@ class File
      *
      * @return bool|string
      */
-    public static function chmod(string $file, int $mode = null)
+    public static function chmod(string $file, int|null $mode = null): bool|string
     {
         if ($mode) {
             return chmod($file, $mode);
@@ -193,13 +200,9 @@ class File
      *
      * @return int|null
      */
-    public static function lastModified(string $path): ?int
+    public static function lastModified(string $path): int|null
     {
-        if (!static::exists($path)) {
-            return null;
-        }
-
-        return filemtime($path);
+        return file_exists($path) ? filemtime($path) : null;
     }
 
     /**
@@ -209,11 +212,7 @@ class File
      */
     public static function isReadable(string $path): bool
     {
-        if (!static::exists($path)) {
-            return false;
-        }
-
-        return is_readable($path);
+        return file_exists($path) && is_readable($path);
     }
 
     /**
@@ -223,11 +222,7 @@ class File
      */
     public static function isWritable(string $path): bool
     {
-        if (!static::exists($path)) {
-            return false;
-        }
-
-        return is_writable($path);
+        return file_exists($path) && is_writable($path);
     }
 
     /**
@@ -236,7 +231,7 @@ class File
      *
      * @return string[]|null
      */
-    public static function glob(string $pattern, int $flags = 0): ?array
+    public static function glob(string $pattern, int $flags = 0): array|null
     {
         $results = glob($pattern, $flags);
 
@@ -253,9 +248,9 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function files(string $directory, bool $hidden = false): ?array
+    public static function files(string $directory, bool $hidden = false): array|null
     {
-        if (!static::isDirectory($directory)) {
+        if (!is_dir($directory)) {
             return null;
         }
 
@@ -283,9 +278,9 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function allFiles(string $directory, bool $hidden = false): ?array
+    public static function allFiles(string $directory, bool $hidden = false): array|null
     {
-        if (!static::isDirectory($directory)) {
+        if (!is_dir($directory)) {
             return null;
         }
 
@@ -312,9 +307,9 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function directories(string $directory, bool $hidden = false): ?array
+    public static function directories(string $directory, bool $hidden = false): array|null
     {
-        if (!static::isDirectory($directory)) {
+        if (!is_dir($directory)) {
             return null;
         }
 
@@ -353,13 +348,12 @@ class File
     /**
      * @param string $file
      *
-     * @return mixed
-     *
      * @throws FileNotFoundException
+     * @return mixed
      */
-    public static function getRequire(string $file)
+    public static function getRequire(string $file): mixed
     {
-        if (!static::isFile($file)) {
+        if (!is_file($file)) {
             throw new FileNotFoundException('The file . "' . $file . '" does not exist');
         }
 
@@ -373,7 +367,7 @@ class File
      */
     public static function getRequireOnce(string $file): void
     {
-        if (!static::isFile($file)) {
+        if (!is_file($file)) {
             throw new FileNotFoundException('The file "' . $file . '" does not exist');
         }
 
@@ -383,13 +377,13 @@ class File
     /**
      * @param string $file
      *
+     * @throws FileNotFoundException
      * @return string|null
      *
-     * @throws FileNotFoundException
      */
-    public static function read(string $file): ?string
+    public static function read(string $file): string|null
     {
-        if (!static::isFile($file)) {
+        if (!is_file($file)) {
             throw new FileNotFoundException('The file "' . $file . '" does not exist');
         }
 
@@ -436,13 +430,13 @@ class File
      * @param string $file
      * @param string $contents
      *
+     * @throws FileNotFoundException
      * @return int
      *
-     * @throws FileNotFoundException
      */
     public static function prepend(string $file, string $contents): int
     {
-        if (static::exists($file)) {
+        if (file_exists($file)) {
             return static::put($file, $contents . static::read($file));
         }
 
@@ -461,11 +455,11 @@ class File
     }
 
     /**
-     * @param string[]|string $paths
+     * @param string|string[] $paths
      *
      * @return bool
      */
-    public static function delete($paths): bool
+    public static function delete(string|array $paths): bool
     {
         $paths = is_array($paths) ? $paths : func_get_args();
         $success = true;
@@ -491,11 +485,7 @@ class File
      */
     public static function move(string $file, string $target): bool
     {
-        if (!static::isFile($file)) {
-            return false;
-        }
-
-        return rename($file, $target);
+        return is_file($file) && rename($file, $target);
     }
 
     /**
@@ -506,11 +496,7 @@ class File
      */
     public static function copy(string $file, string $target): bool
     {
-        if (!static::isFile($file)) {
-            return false;
-        }
-
-        return copy($file, $target);
+        return is_file($file) && copy($file, $target);
     }
 
     /**
@@ -527,11 +513,7 @@ class File
         bool $recursive = false,
         bool $force = false
     ): bool {
-        if ($force) {
-            return @mkdir($path, $mode, $recursive);
-        }
-
-        return mkdir($path, $mode, $recursive);
+        return $force ? @mkdir($path, $mode, $recursive) : mkdir($path, $mode, $recursive);
     }
 
     /**
@@ -542,7 +524,7 @@ class File
      */
     public static function deleteDirectory(string $directory, bool $preserve = false): bool
     {
-        if (!static::isDirectory($directory)) {
+        if (!is_dir($directory)) {
             return false;
         }
 
@@ -583,7 +565,7 @@ class File
      */
     public static function moveDirectory(string $from, string $to, bool $overwrite = false): bool
     {
-        if ($overwrite && static::isDirectory($to) && !static::deleteDirectory($to)) {
+        if ($overwrite && is_dir($to) && !static::deleteDirectory($to)) {
             return false;
         }
 
@@ -597,15 +579,15 @@ class File
      *
      * @return bool
      */
-    public static function copyDirectory(string $directory, string $destination, int $options = null): bool
+    public static function copyDirectory(string $directory, string $destination, int|null $options = null): bool
     {
-        if (!static::isDirectory($directory)) {
+        if (!is_dir($directory)) {
             return false;
         }
 
         $options = $options ?: FilesystemIterator::SKIP_DOTS;
 
-        if (!static::isDirectory($destination)) {
+        if (!is_dir($destination)) {
             static::createDirectory($destination, 0777, true);
         }
 

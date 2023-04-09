@@ -32,7 +32,6 @@
         "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
-        "mockery/mockery": "^1.5",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-phpunit": "^1.2",
         "phpunit/phpunit": "^10.0",
