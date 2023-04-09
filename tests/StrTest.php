@@ -16,7 +16,20 @@ class StrTest extends TestCase
 
     public function testToAscii(): void
     {
-        self::assertEquals('Taxisth alwphx', Str::toAscii('Τάχιστη αλώπηξ'));
+        self::assertEquals('deja sss iiii', Str::toAscii('déjà σσς iıii'));
+        self::assertEquals('Duesseldorf', Str::toAscii('�Düsseldorf�', 'de'));
+        self::assertEquals('Dusseldorf', Str::toAscii('�Düsseldorf�', 'en'));
+    }
+
+    /* -------------------------------------------------
+     * IS ASCII
+     * -------------------------------------------------
+     */
+
+    public function testIsAscii(): void
+    {
+        self::assertTrue(Str::isAscii('deja sss iiii'));
+        self::assertFalse(str::isAscii('白'));
     }
 
     /* -------------------------------------------------
@@ -184,7 +197,7 @@ class StrTest extends TestCase
     {
         self::assertEquals('Foobar', Str::limit('Foobar'));
         self::assertEquals('Foo...', Str::limit('Foobar', 3));
-        self::assertEquals('Foo ->', Str::limit('Foobar', 3, ' ->'));
+        self::assertEquals('Foo ->', Str::limit('Foobar ', 3, ' ->'));
         self::assertEquals('Τάχιστη αλώπηξ', Str::limit('Τάχιστη αλώπηξ'));
         self::assertEquals('Τάχιστη...', Str::limit('Τάχιστη αλώπηξ', 7));
     }
@@ -334,7 +347,7 @@ class StrTest extends TestCase
         self::assertEquals('hello-world', Str::slug('Hello-World'));
         self::assertEquals('hello-world', Str::slug('Hello_World'));
         self::assertEquals('hello_world', Str::slug('Hello_World', '_'));
-        self::assertEquals('taxisth-alwphx-100-00', Str::slug('- Τάχιστη αλώπηξ - 100,00 € -'));
+        self::assertEquals('takhisti-alwpiks-100-00-eur', Str::slug('- Τάχιστη αλώπηξ - 100,00 € -'));
     }
 
     /* -------------------------------------------------
