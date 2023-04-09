@@ -1,6 +1,6 @@
 composer.lock
 .DS_Store
 .idea/
-.phpunit.result.cache
+.phpunit.cache/
 tests/report/
 vendor/
