@@ -17,6 +17,7 @@ class FilterTest extends TestCase
     public function testAlpha(): void
     {
         self::assertSame('foo', Filter::alpha('fo-0-o'));
+        self::assertSame('', Filter::alpha('123'));
     }
 
     /* -------------------------------------------------
@@ -26,7 +27,8 @@ class FilterTest extends TestCase
 
     public function testAlphanum(): void
     {
-        self::assertEquals('foo123', Filter::alphanum('foo-* 123'));
+        self::assertSame('foo123', Filter::alphanum('foo-* 123'));
+        self::assertSame('', Filter::alphanum('!@#$%^&*()_+'));
     }
 
     /* -------------------------------------------------
@@ -36,7 +38,7 @@ class FilterTest extends TestCase
 
     public function testBase64(): void
     {
-        self::assertEquals(
+        self::assertSame(
             'a8O2bGphc2doZHZiYXNua2zDtmzDpMOkYQ==',
             Filter::base64('a8O2bGph*c2do ZHZiYX () Nua2zDtmzDpMOkYQ==')
         );
@@ -49,7 +51,8 @@ class FilterTest extends TestCase
 
     public function testDigits(): void
     {
-        self::assertEquals(123, Filter::digits('f1o2o3'));
+        self::assertSame('123', Filter::digits('f1o2o3'));
+        self::assertSame('', Filter::digits('foo'));
     }
 
     /* -------------------------------------------------
@@ -76,7 +79,7 @@ class FilterTest extends TestCase
     /**
      * @return array{array{float, mixed}}
      */
-    public function floatDataProvider(): array
+    public static function floatDataProvider(): array
     {
         return [
             [0.0, null],
@@ -101,7 +104,7 @@ class FilterTest extends TestCase
             [-12.454, 'abc-12.454abc'],
             [-12.455, 'abc-12. 455'],
             [-12.456, 'abc-12. 456 .7'],
-            //[27.3e-34, '27.3e-34'], Failed asserting that 0.0 is identical to 2.73E-33.
+            // [27.3e-34, '27.3e-34'], Failed asserting that 0.0 is identical to 2.73E-33.
         ];
     }
 
@@ -124,7 +127,7 @@ class FilterTest extends TestCase
     /**
      * @return array<int, mixed>
      */
-    public function intDataProvider(): array
+    public static function intDataProvider(): array
     {
         return [
             [0, null],

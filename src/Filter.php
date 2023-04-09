@@ -10,21 +10,21 @@ namespace Zaphyr\Utils;
 class Filter
 {
     /**
-     * @param mixed $value
+     * @param string|string[] $value
      *
      * @return string|string[]|null
      */
-    public static function alpha($value)
+    public static function alpha(string|array $value): string|array|null
     {
         return preg_replace('#[^[:alpha:]]#', '', $value);
     }
 
     /**
-     * @param mixed $value
+     * @param string|string[] $value
      *
      * @return string|string[]|null
      */
-    public static function alphanum($value)
+    public static function alphanum(string|array $value): string|array|null
     {
         return preg_replace('#[^[:alnum:]]#', '', $value);
     }
@@ -40,15 +40,15 @@ class Filter
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
-     * @return mixed
+     * @return string
      */
-    public static function digits($value)
+    public static function digits(string $value): string
     {
         $cleaned = str_replace(['-', '+'], '', $value);
 
-        return filter_var($cleaned, FILTER_SANITIZE_NUMBER_INT);
+        return (string)filter_var($cleaned, FILTER_SANITIZE_NUMBER_INT);
     }
 
     /**
@@ -57,13 +57,13 @@ class Filter
      *
      * @return float
      */
-    public static function float($value, int $round = 10): float
+    public static function float(mixed $value, int $round = 10): float
     {
-        $cleaned = preg_replace('#[^\deE\-\.\,]#iu', '', $value);
+        $cleaned = (string)preg_replace('#[^\deE\-\.\,]#iu', '', (string)$value);
         $cleaned = str_replace(',', '.', $cleaned);
 
         if (is_string($cleaned)) {
-            preg_match('#[-+]?[\d]+(\.[\d]+)?([eE][-+]?[\d]+)?#', $cleaned, $matches);
+            preg_match('#[-+]?\d+(\.\d+)?([eE][-+]?\d+)?#', $cleaned, $matches);
         }
 
         $result = $matches[0] ?? 0.0;
@@ -76,11 +76,11 @@ class Filter
      *
      * @return int
      */
-    public static function int($value): int
+    public static function int(mixed $value): int
     {
-        $cleaned = preg_replace('#[^0-9-+.,]#', '', $value);
+        $cleaned = (string)preg_replace('#[^0-9-+.,]#', '', (string)$value);
 
-        preg_match('#[-+]?[\d]+#', $cleaned, $matches);
+        preg_match('#[-+]?\d+#', $cleaned, $matches);
 
         $result = $matches[0] ?? 0;
 
