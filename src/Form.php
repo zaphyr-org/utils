@@ -14,7 +14,7 @@ class Form
     /**
      * @var string[]
      */
-    protected static $reserved = [
+    protected static array $reserved = [
         'method',
         'action',
         'files',
@@ -23,7 +23,7 @@ class Form
     /**
      * @var string[]
      */
-    protected static $spoofedMethods = [
+    protected static array $spoofedMethods = [
         'DELETE',
         'PATCH',
         'PUT',
@@ -32,17 +32,7 @@ class Form
     /**
      * @var string[]
      */
-    protected static $skipValueTypes = [
-        'file',
-        'password',
-        'checkbox',
-        'radio',
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected static $labels = [];
+    protected static array $labels = [];
 
     /**
      * @param array<string, mixed> $options
@@ -66,7 +56,7 @@ class Form
             $options['enctype'] = 'multipart/form-data';
         }
 
-        $attributes = array_merge($attributes, Arr::except($options, self::$reserved));
+        $attributes = [...$attributes, ...Arr::except($options, self::$reserved)];
         $attributes = HTML::attributes($attributes);
 
         return '<form' . $attributes . '>' . $append;
@@ -89,7 +79,7 @@ class Form
      *
      * @return string|null
      */
-    public static function getAction(array $options): ?string
+    public static function getAction(array $options): string|null
     {
         return $options['action'] ?? null;
     }
@@ -130,7 +120,7 @@ class Form
      */
     public static function label(
         string $name,
-        ?string $value = null,
+        string|null $value = null,
         array $options = [],
         bool $escapeHTML = true
     ): string {
@@ -152,7 +142,7 @@ class Form
      *
      * @return string
      */
-    protected static function formatLabel(string $name, ?string $value = null): string
+    protected static function formatLabel(string $name, string|null $value = null): string
     {
         return $value ?: ucwords(str_replace(['_', '-'], ' ', $name));
     }
@@ -165,7 +155,7 @@ class Form
      *
      * @return string
      */
-    public static function input(string $type, ?string $name, $value = null, array $options = []): string
+    public static function input(string $type, string|null $name, mixed $value = null, array $options = []): string
     {
         if (!isset($options['name'])) {
             $options['name'] = $name;
@@ -174,7 +164,7 @@ class Form
         $id = self::getIdAttribute($name, $options);
 
         $merge = compact('type', 'value', 'id');
-        $options = array_merge($options, $merge);
+        $options = [...$options, ...$merge];
 
         return '<input' . HTML::attributes($options) . '>';
     }
@@ -185,7 +175,7 @@ class Form
      *
      * @return string|null
      */
-    protected static function getIdAttribute(?string $name, array $options): ?string
+    protected static function getIdAttribute(string|null $name, array $options): string|null
     {
         if (array_key_exists('id', $options)) {
             return $options['id'];
@@ -205,7 +195,7 @@ class Form
      *
      * @return string
      */
-    public static function text(string $name, ?string $value = null, array $options = []): string
+    public static function text(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('text', $name, $value, $options);
     }
@@ -228,7 +218,7 @@ class Form
      *
      * @return string
      */
-    public static function range(string $name, ?string $value = null, array $options = []): string
+    public static function range(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('range', $name, $value, $options);
     }
@@ -240,7 +230,7 @@ class Form
      *
      * @return string
      */
-    public static function hidden(string $name, ?string $value = null, array $options = []): string
+    public static function hidden(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('hidden', $name, $value, $options);
     }
@@ -252,7 +242,7 @@ class Form
      *
      * @return string
      */
-    public static function search(string $name, ?string $value = null, array $options = []): string
+    public static function search(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('search', $name, $value, $options);
     }
@@ -264,7 +254,7 @@ class Form
      *
      * @return string
      */
-    public static function email(string $name, ?string $value = null, array $options = []): string
+    public static function email(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('email', $name, $value, $options);
     }
@@ -276,7 +266,7 @@ class Form
      *
      * @return string
      */
-    public static function tel(string $name, ?string $value = null, array $options = []): string
+    public static function tel(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('tel', $name, $value, $options);
     }
@@ -288,7 +278,7 @@ class Form
      *
      * @return string
      */
-    public static function number(string $name, ?string $value = null, array $options = []): string
+    public static function number(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('number', $name, $value, $options);
     }
@@ -300,7 +290,7 @@ class Form
      *
      * @return string
      */
-    public static function date(string $name, $value = null, array $options = []): string
+    public static function date(string $name, DateTimeInterface|string|null $value = null, array $options = []): string
     {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format('Y-m-d');
@@ -316,8 +306,11 @@ class Form
      *
      * @return string
      */
-    public static function datetime(string $name, $value = null, array $options = []): string
-    {
+    public static function datetime(
+        string $name,
+        DateTimeInterface|string|null $value = null,
+        array $options = []
+    ): string {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format(DateTimeInterface::RFC3339);
         }
@@ -332,8 +325,11 @@ class Form
      *
      * @return string
      */
-    public static function datetimeLocal(string $name, $value = null, array $options = []): string
-    {
+    public static function datetimeLocal(
+        string $name,
+        DateTimeInterface|string|null $value = null,
+        array $options = []
+    ): string {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format('Y-m-d\TH:i');
         }
@@ -348,7 +344,7 @@ class Form
      *
      * @return string
      */
-    public static function time(string $name, $value = null, array $options = []): string
+    public static function time(string $name, DateTimeInterface|string|null $value = null, array $options = []): string
     {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format('H:i');
@@ -364,7 +360,7 @@ class Form
      *
      * @return string
      */
-    public static function week(string $name, $value = null, array $options = []): string
+    public static function week(string $name, DateTimeInterface|string|null $value = null, array $options = []): string
     {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format('Y-\WW');
@@ -380,7 +376,7 @@ class Form
      *
      * @return string
      */
-    public static function month(string $name, $value = null, array $options = []): string
+    public static function month(string $name, DateTimeInterface|string|null $value = null, array $options = []): string
     {
         if ($value instanceof DateTimeInterface) {
             $value = $value->format('Y-m');
@@ -396,7 +392,7 @@ class Form
      *
      * @return string
      */
-    public static function url(string $name, ?string $value = null, array $options = []): string
+    public static function url(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('url', $name, $value, $options);
     }
@@ -433,7 +429,7 @@ class Form
      *
      * @return string
      */
-    public static function color(string $name, ?string $value = null, array $options = []): string
+    public static function color(string $name, string|null $value = null, array $options = []): string
     {
         return self::input('color', $name, $value, $options);
     }
@@ -455,7 +451,7 @@ class Form
      *
      * @return string
      */
-    public static function submit(?string $value = null, array $options = []): string
+    public static function submit(string|null $value = null, array $options = []): string
     {
         return self::input('submit', null, $value, $options);
     }
@@ -483,7 +479,7 @@ class Form
      *
      * @return string
      */
-    public static function checkbox(string $name, $value = 1, bool $checked = false, array $options = []): string
+    public static function checkbox(string $name, mixed $value = 1, bool $checked = false, array $options = []): string
     {
         return self::checkable('checkbox', $name, $value, $checked, $options);
     }
@@ -496,7 +492,7 @@ class Form
      *
      * @return string
      */
-    public static function radio(string $name, $value = null, bool $checked = false, array $options = []): string
+    public static function radio(string $name, mixed $value = null, bool $checked = false, array $options = []): string
     {
         if ($value === null) {
             $value = $name;
@@ -514,7 +510,7 @@ class Form
      *
      * @return string
      */
-    protected static function checkable(string $type, string $name, $value, bool $checked, array $options): string
+    protected static function checkable(string $type, string $name, mixed $value, bool $checked, array $options): string
     {
         if (self::getCheckedState($type, $name, $value, $checked)) {
             $options['checked'] = 'checked';
@@ -531,16 +527,13 @@ class Form
      *
      * @return bool
      */
-    protected static function getCheckedState(string $type, string $name, $value, bool $checked): bool
+    protected static function getCheckedState(string $type, string $name, mixed $value, bool $checked): bool
     {
-        switch ($type) {
-            case 'checkbox':
-                return (bool)self::getValueAttribute($name, $checked);
-            case 'radio':
-                return $checked ?: self::getValueAttribute($name) === $value;
-            default:
-                return false;
-        }
+        return match ($type) {
+            'checkbox' => (bool)self::getValueAttribute($name, $checked),
+            'radio' => $checked ?: self::getValueAttribute($name) === $value,
+            default => false,
+        };
     }
 
     /**
@@ -549,7 +542,7 @@ class Form
      *
      * @return mixed
      */
-    protected static function getValueAttribute($name, $value = null)
+    protected static function getValueAttribute(mixed $name, mixed $value = null): mixed
     {
         if ($name === null) {
             return $value;
@@ -568,7 +561,7 @@ class Form
      */
     public static function textarea(
         string $name,
-        ?string $value = null,
+        string|null $value = null,
         array $options = [],
         bool $escapeHTML = true
     ): string {
@@ -604,7 +597,8 @@ class Form
         $cols = Arr::get($options, 'cols', 50);
         $rows = Arr::get($options, 'rows', 10);
 
-        return array_merge($options, compact('cols', 'rows'));
+        $merge = compact('cols', 'rows');
+        return [...$options, ...$merge];
     }
 
     /**
@@ -616,7 +610,7 @@ class Form
     {
         $segments = explode('x', $options['size']);
 
-        return array_merge($options, ['cols' => $segments[0], 'rows' => $segments[1]]);
+        return [...$options, ...['cols' => $segments[0], 'rows' => $segments[1]]];
     }
 
     /**
@@ -632,7 +626,7 @@ class Form
     public static function select(
         string $name,
         array $list = [],
-        $selected = null,
+        mixed $selected = null,
         array $selectAttributes = [],
         array $optionsAttributes = [],
         array $optgroupsAttributes = []
@@ -664,18 +658,18 @@ class Form
     }
 
     /**
-     * @param array<string, mixed>|string $display
-     * @param mixed                       $value
-     * @param mixed                       $selected
-     * @param array<string, mixed>        $attributes
-     * @param array<string, mixed>        $optgroupAttributes
+     * @param array<string, mixed>|string|int $display
+     * @param mixed                           $value
+     * @param mixed                           $selected
+     * @param array<string, mixed>            $attributes
+     * @param array<string, mixed>            $optgroupAttributes
      *
      * @return string
      */
     protected static function getSelectOption(
-        $display,
-        $value,
-        $selected,
+        array|string|int $display,
+        mixed $value,
+        mixed $selected,
         array $attributes = [],
         array $optgroupAttributes = []
     ): string {
@@ -694,10 +688,10 @@ class Form
      *
      * @return string
      */
-    protected static function option(string $display, $value, $selected, array $options = []): string
+    protected static function option(string $display, mixed $value, mixed $selected, array $options = []): string
     {
         $selected = self::getSelectedValue($value, $selected);
-        $options = array_merge(['value' => $value, 'selected' => $selected], $options);
+        $options = [...['value' => $value, 'selected' => $selected], ...$options];
         $string = '<option' . HTML::attributes($options) . '>';
         $string .= Str::escape($display, ENT_QUOTES, false) . '</option>';
 
@@ -717,7 +711,7 @@ class Form
     protected static function optionGroup(
         array $list,
         string $label,
-        $selected,
+        mixed $selected,
         array $attributes = [],
         array $optgroupAttributes = [],
         int $level = 0
@@ -754,7 +748,7 @@ class Form
      *
      * @return string
      */
-    protected static function placeholderOption(string $display, $selected): string
+    protected static function placeholderOption(string $display, mixed $selected): string
     {
         $selected = self::getSelectedValue(null, $selected);
 
@@ -772,10 +766,10 @@ class Form
      *
      * @return bool|string|null
      */
-    protected static function getSelectedValue($value, $selected)
+    protected static function getSelectedValue(mixed $value, mixed $selected): bool|string|null
     {
         if (is_array($selected)) {
-            return in_array($value, $selected, true) || in_array($value, $selected, true) ? 'selected' : null;
+            return in_array($value, $selected, true) ? 'selected' : null;
         }
 
         if (is_int($value) && is_bool($selected)) {
@@ -797,9 +791,9 @@ class Form
      */
     public static function selectRange(
         string $name,
-        $begin,
-        $end,
-        $selected = null,
+        int|string $begin,
+        int|string $end,
+        mixed $selected = null,
         array $selectAttributes = [],
         array $optionsAttributes = []
     ): string {
