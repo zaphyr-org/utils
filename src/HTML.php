@@ -35,7 +35,7 @@ class HTML
      *
      * @return string|null
      */
-    public static function attributeElement($key, $value): ?string
+    public static function attributeElement(mixed $key, mixed $value): string|null
     {
         if (is_numeric($key)) {
             return $value;
