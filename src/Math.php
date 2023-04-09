@@ -26,8 +26,11 @@ class Math
      *
      * @return bool|float|int
      */
-    public static function round($number, int $precision = 2, int $mode = self::ROUND_UP)
-    {
+    public static function round(
+        float|int|string $number,
+        int $precision = 2,
+        int $mode = self::ROUND_UP
+    ): bool|float|int {
         if (!static::isFloat($number)) {
             return false;
         }
@@ -47,13 +50,13 @@ class Math
     }
 
     /**
-     * @param array<int> $numbers
-     * @param int        $precision
-     * @param int        $mode (MathHelper::ROUND_UP, MathHelper::ROUND_DOWN)
+     * @param array<int, float|int|string> $numbers
+     * @param int                          $precision
+     * @param int                          $mode (MathHelper::ROUND_UP, MathHelper::ROUND_DOWN)
      *
      * @return bool|float|int
      */
-    public static function average(array $numbers, int $precision = 2, int $mode = self::ROUND_UP)
+    public static function average(array $numbers, int $precision = 2, int $mode = self::ROUND_UP): bool|float|int
     {
         foreach ($numbers as $number) {
             if (!static::isFloat($number)) {
@@ -75,8 +78,12 @@ class Math
      *
      * @return bool|float|int
      */
-    public static function percentage($percentage, $total, int $precision = 2, int $mode = self::ROUND_UP)
-    {
+    public static function percentage(
+        float|int|string $percentage,
+        float|int|string $total,
+        int $precision = 2,
+        int $mode = self::ROUND_UP
+    ): bool|float|int {
         if (!static::isFloat($percentage) || !static::isFloat($total)) {
             return false;
         }
@@ -95,9 +102,9 @@ class Math
      *
      * @return bool|string
      */
-    public static function ordinal($number)
+    public static function ordinal(float|int|string $number): bool|string
     {
-        if (!static::isInteger($number) || $number <= 0) {
+        if ($number <= 0 || !static::isInteger($number)) {
             return false;
         }
 
@@ -115,9 +122,9 @@ class Math
      *
      * @return bool|int
      */
-    public static function faculty($number)
+    public static function faculty(float|int|string $number): bool|int
     {
-        if (!static::isInteger($number) || $number < 0) {
+        if ($number < 0 || !static::isInteger($number)) {
             return false;
         }
 
@@ -134,7 +141,7 @@ class Math
      *
      * @return array<int>
      */
-    public static function combinations(array $numbers, int $id = null): array
+    public static function combinations(array $numbers, int|null $id = null): array
     {
         $combinations = [];
         $count = count($numbers);
@@ -155,9 +162,9 @@ class Math
      * @param numeric $number
      * @param int     $min
      *
-     * @return bool|int
+     * @return bool|float|int
      */
-    public static function min($number, int $min)
+    public static function min(float|int|string $number, int $min): bool|float|int
     {
         if (!static::isFloat($number)) {
             return false;
@@ -174,9 +181,9 @@ class Math
      * @param numeric $number
      * @param int     $max
      *
-     * @return bool|int
+     * @return bool|float|int
      */
-    public static function max($number, int $max)
+    public static function max(float|int|string $number, int $max): bool|float|int
     {
         if (!static::isFloat($number)) {
             return false;
@@ -194,7 +201,7 @@ class Math
      *
      * @return bool
      */
-    public static function isInteger($number): bool
+    public static function isInteger(float|int|string $number): bool
     {
         return is_numeric($number) && (string)(int)$number === (string)$number;
     }
@@ -204,7 +211,7 @@ class Math
      *
      * @return bool
      */
-    public static function isFloat($number): bool
+    public static function isFloat(float|int|string $number): bool
     {
         $lnum = '[0-9]+';
         $dnum = "([0-9]*[\\.]{$lnum})|({$lnum}[\\.][0-9]*)";
@@ -220,7 +227,7 @@ class Math
      *
      * @return bool
      */
-    public static function isInRange($number, int $min, int $max): bool
+    public static function isInRange(float|int|string $number, int $min, int $max): bool
     {
         if (!static::isFloat($number)) {
             return false;
@@ -236,7 +243,7 @@ class Math
      *
      * @return bool
      */
-    public static function isOutOfRange($number, int $min, int $max): bool
+    public static function isOutOfRange(float|int|string $number, int $min, int $max): bool
     {
         if (!static::isFloat($number)) {
             return false;
@@ -250,7 +257,7 @@ class Math
      *
      * @return bool
      */
-    public static function isEven($number): bool
+    public static function isEven(float|int|string $number): bool
     {
         if (!static::isFloat($number)) {
             return false;
@@ -264,7 +271,7 @@ class Math
      *
      * @return bool
      */
-    public static function isOdd($number): bool
+    public static function isOdd(float|int|string $number): bool
     {
         if (!static::isFloat($number)) {
             return false;
@@ -279,7 +286,7 @@ class Math
      *
      * @return bool
      */
-    public static function isPositive($number, bool $zero = true): bool
+    public static function isPositive(float|int|string $number, bool $zero = true): bool
     {
         if (!static::isFloat($number)) {
             return false;
@@ -293,7 +300,7 @@ class Math
      *
      * @return bool
      */
-    public static function isNegative($number): bool
+    public static function isNegative(float|int|string $number): bool
     {
         if (!static::isFloat($number)) {
             return false;

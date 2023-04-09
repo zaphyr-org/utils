@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Zaphyr\UtilsTests;
 
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Zaphyr\Utils\Math;
 
 class MathTest extends TestCase
@@ -23,8 +22,12 @@ class MathTest extends TestCase
      *
      * @dataProvider validRoundDataProvider
      */
-    public function testRoundReturnsTrue($expected, $result, int $precision = 2, int $round = Math::ROUND_UP): void
-    {
+    public function testRoundReturnsTrue(
+        float|int|string $expected,
+        float|int|string $result,
+        int $precision = 2,
+        int $round = Math::ROUND_UP
+    ): void {
         self::assertEquals($expected, Math::round($result, $precision, $round));
     }
 
@@ -33,7 +36,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidFloatDataProvider
      */
-    public function testRoundReturnsFalse($value): void
+    public function testRoundReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::round($value));
         self::assertFalse(Math::round(1, 2, 999));
@@ -42,7 +45,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<string, numeric>>
      */
-    public function validRoundDataProvider(): array
+    public static function validRoundDataProvider(): array
     {
         return [
             // round up
@@ -109,14 +112,18 @@ class MathTest extends TestCase
 
     /**
      * @param numeric $expected
-     * @param numeric $result
+     * @param int[]   $result
      * @param int     $precision
      * @param int     $round
      *
      * @dataProvider validAverageDataProvider
      */
-    public function testAverageReturnsFloat($expected, $result, int $precision = 2, int $round = Math::ROUND_UP): void
-    {
+    public function testAverageReturnsFloat(
+        float|int|string $expected,
+        array $result,
+        int $precision = 2,
+        int $round = Math::ROUND_UP
+    ): void {
         self::assertEquals($expected, Math::average($result, $precision, $round));
     }
 
@@ -125,7 +132,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidFloatDataProvider
      */
-    public function testAverageReturnsFalse($value): void
+    public function testAverageReturnsFalse(float|int|string $value): void
     {
         self::assertFalse(Math::average([$value]));
         self::assertFalse(Math::average([1, 2], 2, 999));
@@ -134,7 +141,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<string, numeric>>
      */
-    public function validAverageDataProvider(): array
+    public static function validAverageDataProvider(): array
     {
         return [
             'int' => [
@@ -179,9 +186,9 @@ class MathTest extends TestCase
      * @dataProvider validPercentageDataProvider
      */
     public function testCalculatePercentageReturnsFloat(
-        $expected,
-        $percentage,
-        $total,
+        float|int|string $expected,
+        float|int|string $percentage,
+        float|int|string $total,
         int $precision = 2,
         int $round = Math::ROUND_UP
     ): void {
@@ -193,7 +200,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidFloatDataProvider
      */
-    public function testCalculatePercentageReturnsFalse($value): void
+    public function testCalculatePercentageReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::percentage($value, 10));
         self::assertFalse(Math::percentage(0, $value));
@@ -205,7 +212,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<string, numeric>>
      */
-    public function validPercentageDataProvider(): array
+    public static function validPercentageDataProvider(): array
     {
         return [
             'int' => [
@@ -250,7 +257,7 @@ class MathTest extends TestCase
      *
      * @dataProvider validOrdinalsDataProvider
      */
-    public function testOrdinalReturnsFloat($expected, $result): void
+    public function testOrdinalReturnsFloat(float|int|string $expected, float|int|string $result): void
     {
         self::assertEquals($expected, Math::ordinal($result));
     }
@@ -260,7 +267,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidIntegerDataProvider
      */
-    public function testOrdinalReturnsFalse($value): void
+    public function testOrdinalReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::ordinal($value));
         self::assertFalse(Math::ordinal(0));
@@ -270,7 +277,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, numeric>
      */
-    public function validOrdinalsDataProvider(): array
+    public static function validOrdinalsDataProvider(): array
     {
         return [
             ['1st', 1],
@@ -306,7 +313,7 @@ class MathTest extends TestCase
      *
      * @dataProvider validFacultiesDataProvider
      */
-    public function testFacultyReturnsInteger($expected, $result): void
+    public function testFacultyReturnsInteger(float|int|string $expected, float|int|string $result): void
     {
         self::assertEquals($expected, Math::faculty($result));
     }
@@ -316,7 +323,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidIntegerDataProvider
      */
-    public function testFacultyReturnsFalse($value): void
+    public function testFacultyReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::faculty($value));
         self::assertFalse(Math::faculty(-1));
@@ -325,7 +332,7 @@ class MathTest extends TestCase
     /**
      * @return array<int, numeric>
      */
-    public function validFacultiesDataProvider(): array
+    public static function validFacultiesDataProvider(): array
     {
         return [
             [0, -1],
@@ -407,7 +414,7 @@ class MathTest extends TestCase
      *
      * @dataProvider validIntegerDataProvider
      */
-    public function testIsIntegerReturnsTrue($value): void
+    public function testIsIntegerReturnsTrue(float|int|string $value): void
     {
         self::assertTrue(Math::isInteger($value));
     }
@@ -417,7 +424,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidIntegerDataProvider
      */
-    public function testIsIntegerReturnsFalse($value): void
+    public function testIsIntegerReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::isInteger($value));
     }
@@ -425,7 +432,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<numeric>>
      */
-    public function validIntegerDataProvider(): array
+    public static function validIntegerDataProvider(): array
     {
         return [
             'zero' => [0],
@@ -440,7 +447,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<mixed>>
      */
-    public function invalidIntegerDataProvider(): array
+    public static function invalidIntegerDataProvider(): array
     {
         return [
             'string_leading_zero' => ['012'],
@@ -458,9 +465,6 @@ class MathTest extends TestCase
             'float_negative' => [-1.20],
             'float_string' => ['1.20'],
             'string_trailing_dot' => ['10.'],
-            'null' => [null],
-            'array' => [[]],
-            'object' => [new stdClass],
         ];
     }
 
@@ -474,7 +478,7 @@ class MathTest extends TestCase
      *
      * @dataProvider validFloatDataProvider
      */
-    public function testIsFloatReturnsTrue($value): void
+    public function testIsFloatReturnsTrue(float|int|string $value): void
     {
         self::assertTrue(Math::isFloat($value));
     }
@@ -484,7 +488,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidFloatDataProvider
      */
-    public function testIsFloatReturnsFalse($value): void
+    public function testIsFloatReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::isFloat($value));
     }
@@ -492,7 +496,7 @@ class MathTest extends TestCase
     /**
      * @return array<string, array<numeric>>
      */
-    public function validFloatDataProvider(): array
+    public static function validFloatDataProvider(): array
     {
         return [
                 'float' => [1.20],
@@ -504,13 +508,13 @@ class MathTest extends TestCase
                 'string_trailing_zeros' => ['10.00'],
                 'float_negative_expo' => [-1.2e3],
                 'string_negative_expo' => ['-1.2e03'],
-            ] + $this->validIntegerDataProvider();
+            ] + self::validIntegerDataProvider();
     }
 
     /**
      * @return array<string, array<mixed>>
      */
-    public function invalidFloatDataProvider(): array
+    public static function invalidFloatDataProvider(): array
     {
         return [
             'string' => ['invalid'],
@@ -520,9 +524,6 @@ class MathTest extends TestCase
             'space_after' => ['1 '],
             'tab_before' => ['  1'],
             'tab_after' => ['1  '],
-            'null' => [null],
-            'array' => [[]],
-            'object' => [new stdClass],
         ];
     }
 
@@ -538,7 +539,7 @@ class MathTest extends TestCase
      *
      * @dataProvider validRangesDataProvider
      */
-    public function testIsInRangeReturnsTrue($value, int $min, int $max): void
+    public function testIsInRangeReturnsTrue(mixed $value, int $min, int $max): void
     {
         self::assertTrue(Math::isInRange($value, $min, $max));
     }
@@ -548,7 +549,7 @@ class MathTest extends TestCase
      *
      * @dataProvider invalidFloatDataProvider
      */
-    public function testIsInRangeReturnsFalse($value): void
+    public function testIsInRangeReturnsFalse(mixed $value): void
     {
         self::assertFalse(Math::isInRange($value, 0, 2));
         self::assertFalse(Math::isInRange(100, 0, 2));
@@ -557,7 +558,7 @@ class MathTest extends TestCase
     /**
      * @return array{int, int, int}
      */
-    public function validRangesDataProvider(): array
+    public static function validRangesDataProvider(): array
     {
         return [
             [1, 1, 2],
