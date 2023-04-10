@@ -1037,8 +1037,8 @@ class FormTest extends TestCase
     public function testSelectWithPlaceholderOption(): void
     {
         self::assertEquals(
-            '<select name="avc"><option value="">Choose</option><option value="1" selected>Yes</option><option value="0" >No</option></select>',
-            Form::select('avc', [1 => 'Yes', 0 => 'No'], true, ['placeholder' => 'Choose'])
+            '<select name="avc"><option disabled="disabled" selected="selected">Choose</option><option value="1">Yes</option><option value="0">No</option></select>',
+            Form::select('avc', [1 => 'Yes', 0 => 'No'], null, ['placeholder' => 'Choose'])
         );
     }
 

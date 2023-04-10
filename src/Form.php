@@ -645,7 +645,7 @@ class Form
         $html = [];
 
         if (isset($selectAttributes['placeholder'])) {
-            $html[] = self::placeholderOption($selectAttributes['placeholder'], $selected);
+            $html[] = self::placeholderOption($selectAttributes['placeholder']);
             unset($selectAttributes['placeholder']);
         }
 
@@ -751,13 +751,11 @@ class Form
      *
      * @return string
      */
-    protected static function placeholderOption(string $display, mixed $selected): string
+    protected static function placeholderOption(string $display): string
     {
-        $selected = self::getSelectedValue(null, $selected);
-
         $options = [
-            'selected' => $selected,
-            'value' => '',
+            'disabled' => 'disabled',
+            'selected' => 'selected',
         ];
 
         return '<option' . HTML::attributes($options) . '>' . Str::escape($display, ENT_QUOTES, false) . '</option>';
