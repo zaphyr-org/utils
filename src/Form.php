@@ -66,6 +66,8 @@ class Form
      * @param string $method
      *
      * @return string
+     * @internal
+     * @deprecated This method will be set to protected in v3.0
      */
     public static function getMethod(string $method): string
     {
@@ -78,6 +80,8 @@ class Form
      * @param string[] $options
      *
      * @return string|null
+     * @internal
+     * @deprecated This method will be set to protected in v3.0
      */
     public static function getAction(array $options): string|null
     {
@@ -744,7 +748,6 @@ class Form
 
     /**
      * @param string $display
-     * @param mixed  $selected
      *
      * @return string
      */
