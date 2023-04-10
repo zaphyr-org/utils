@@ -26,6 +26,16 @@ class TimezoneTest extends TestCase
     }
 
     /* -------------------------------------------------
+     * GET ALL TIMEZONES AS JSON STRING
+     * -------------------------------------------------
+     */
+
+    public function testGetAllTimezonesAsJsonString(): void
+    {
+        self::assertIsString(Timezone::getAllTimezonesAsJsonString());
+    }
+
+    /* -------------------------------------------------
      * GET TIMEZONES BY CONTINENT
      * -------------------------------------------------
      */

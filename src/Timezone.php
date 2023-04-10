@@ -40,6 +40,14 @@ class Timezone
     }
 
     /**
+     * @return string
+     */
+    public static function getAllTimezonesAsJsonString(): string
+    {
+        return json_encode(self::getAllTimezones(), JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * @param string $continent
      *
      * @return array<string, string>|string[]
