@@ -58,7 +58,7 @@ class ClassFinder
      */
     public static function getNamespaceFromFile(string $filename): ?string
     {
-        $contents = file_get_contents($filename);
+        $contents = is_file($filename) ? file_get_contents($filename) : null;
 
         if (!is_string($contents)) {
             return null;

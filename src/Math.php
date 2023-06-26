@@ -263,7 +263,7 @@ class Math
             return false;
         }
 
-        return $number % 2 === 0;
+        return (int)$number % 2 === 0;
     }
 
     /**
