@@ -3,16 +3,9 @@ parameters:
     level: 8
     paths:
         - src
-        - tests
     parallel:
         maximumNumberOfProcesses: 1
     checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
-    excludePaths:
-        - tests/report/*
-        - tests/TestAsset/*
-        - tests/Integration/TestAsset/*
     ignoreErrors:
         - '%Parameter #1 \$[a-zA-Z]+ of static method Zaphyr\\Utils\\Math::[\s\S]+\(\) expects float|int|numeric-string, [a-zA-Z0-9]+ given.%'
-        - '%Parameter #2 \$haystack of static method PHPUnit\\Framework\\Assert::[\s\S]+\(\) expects [a-zA-Z\|]+, array<[a-zA-Z0-9]+>\|null given.%'
-        - '%Parameter #2 \$data of static method Zaphyr\\Utils\\Template::render\(\) expects array<string, string>, array<string, array<string, string>> given.%'
