@@ -51,10 +51,10 @@
     "scripts": {
         "cs": "vendor/bin/phpcs --standard=PSR12 -n src",
         "cbf": "vendor/bin/phpcbf --standard=PSR12 -n src",
-        "unit": "vendor/bin/phpunit --colors=always",
+        "phpunit": "vendor/bin/phpunit --colors=always",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit 512M",
         "test": [
-            "@unit",
+            "@phpunit",
             "@phpstan",
             "@cs"
         ]
