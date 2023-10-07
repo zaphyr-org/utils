@@ -5,4 +5,4 @@
 CHANGELOG.md        export-ignore
 LICENSE.md          export-ignore
 phpstan.neon        export-ignore
-phpunit.xml.dist    export-ignore
+phpunit.xml         export-ignore
