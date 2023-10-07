@@ -469,7 +469,7 @@ class File
                 if (!@unlink($path)) {
                     $success = false;
                 }
-            } catch (ErrorException $e) {
+            } catch (ErrorException) {
                 $success = false;
             }
         }
@@ -497,6 +497,31 @@ class File
     public static function copy(string $file, string $target): bool
     {
         return is_file($file) && copy($file, $target);
+    }
+
+    /**
+     * @param string $file
+     * @param mixed  $contents
+     * @param bool   $lock
+     *
+     * @return int
+     */
+    public static function serialize(string $file, mixed $contents, bool $lock = false): int
+    {
+        return static::put($file, serialize($contents), $lock);
+    }
+
+    /**
+     * @param string $file
+     *
+     * @throws FileNotFoundException
+     * @return mixed
+     */
+    public static function unserialize(string $file): mixed
+    {
+        $contents = static::read($file);
+
+        return $contents !== null ? unserialize($contents) : null;
     }
 
     /**

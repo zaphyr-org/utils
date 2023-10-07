@@ -643,6 +643,18 @@ class FileTest extends TestCase
 
     /**
      * ------------------------------------------
+     * SERIALIZE
+     * ------------------------------------------
+     */
+
+    public function testSerialize(): void
+    {
+        self::assertIsInt(File::serialize($file = $this->tempDir . '/foo', $data = ['foo' => 'bar']));
+        self::assertEquals($data, File::unserialize($file));
+    }
+
+    /**
+     * ------------------------------------------
      * CREATE DIRECTORY
      * ------------------------------------------
      */
