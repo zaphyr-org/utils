@@ -26,7 +26,7 @@ class Template
             throw new UtilsException('Template file "' . $template . '" not found');
         }
 
-        if (!empty($data)) {
+        if (count($data) > 0) {
             foreach ($data as $name => $value) {
                 if (is_string($value) !== true) {
                     throw new UtilsException(

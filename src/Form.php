@@ -516,7 +516,7 @@ class Form
      */
     protected static function checkable(string $type, string $name, mixed $value, bool $checked, array $options): string
     {
-        if (self::getCheckedState($type, $name, $value, $checked)) {
+        if (self::getCheckedState($type, $value, $checked)) {
             $options['checked'] = 'checked';
         }
 
@@ -525,34 +525,18 @@ class Form
 
     /**
      * @param string $type
-     * @param string $name
      * @param mixed  $value
      * @param bool   $checked
      *
      * @return bool
      */
-    protected static function getCheckedState(string $type, string $name, mixed $value, bool $checked): bool
+    protected static function getCheckedState(string $type, mixed $value, bool $checked): bool
     {
         return match ($type) {
-            'checkbox' => (bool)self::getValueAttribute($name, $checked),
-            'radio' => $checked ?: self::getValueAttribute($name) === $value,
+            'checkbox' => $checked,
+            'radio' => $checked ?: null === $value,
             default => false,
         };
-    }
-
-    /**
-     * @param mixed $name
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected static function getValueAttribute(mixed $name, mixed $value = null): mixed
-    {
-        if ($name === null) {
-            return $value;
-        }
-
-        return $value ?? null;
     }
 
     /**
@@ -635,7 +619,6 @@ class Form
         array $optionsAttributes = [],
         array $optgroupsAttributes = []
     ): string {
-        $selected = self::getValueAttribute($name, $selected);
         $selectAttributes['id'] = self::getIdAttribute($name, $selectAttributes);
 
         if (!isset($selectAttributes['name'])) {
