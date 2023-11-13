@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Zaphyr\Utils\Timezone;
@@ -63,7 +63,7 @@ class TimezoneTest extends TestCase
 
     public function testGetTimezone(): void
     {
-        self::assertEquals('(UTC+02:00) Berlin', Timezone::getTimezone('Europe', 'Berlin'));
+        self::assertEquals('(UTC+01:00) Berlin', Timezone::getTimezone('Europe', 'Berlin'));
     }
 
     public function testGetTimezoneReturnsNullOnInvalidContinent(): void

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
@@ -108,7 +108,7 @@ class FileTest extends TestCase
         self::assertNull(File::name(__DIR__ . '/Invalid.php'));
 
         // dir
-        self::assertEquals('tests', File::name(__DIR__));
+        self::assertEquals('Unit', File::name(__DIR__));
         self::assertNull(File::name(__DIR__ . '/invalid'));
     }
 
@@ -125,7 +125,7 @@ class FileTest extends TestCase
         self::assertNull(File::basename(__DIR__ . '/Invalid.php'));
 
         // dir
-        self::assertEquals('tests', File::basename(__DIR__));
+        self::assertEquals('Unit', File::basename(__DIR__));
         self::assertNull(File::basename(__DIR__ . '/invalid'));
     }
 
@@ -792,5 +792,10 @@ class FileTest extends TestCase
         self::assertFileExists($tempDir2 . '/bar.txt');
         self::assertDirectoryExists($tempDir2 . '/nested');
         self::assertFileExists($tempDir2 . '/nested/baz.txt');
+    }
+
+    public function testCopyDirectoryReturnsNullWhenSourceIsNotADirectory(): void
+    {
+        self::assertFalse(File::copyDirectory('/nope', $this->tempDir));
     }
 }

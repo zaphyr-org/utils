@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
+use ArrayIterator;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -951,6 +952,14 @@ class FormTest extends TestCase
         );
     }
 
+    public function testSelectWithSelectedTrueOption(): void
+    {
+        self::assertEquals(
+            '<select name="select"><option value="0" >false</option><option value="1" selected>true</option></select>',
+            Form::select('select', ['false', 'true'], true)
+        );
+    }
+
     public function testSelectWithMultipleSelectedOption(): void
     {
         self::assertEquals(
@@ -1000,6 +1009,19 @@ class FormTest extends TestCase
                 [],
                 ['Large sizes' => ['l' => ['disabled']], 'm' => ['disabled']],
                 ['Small sizes' => ['disabled']]
+            )
+        );
+    }
+
+    public function testSelectWithArrayOptions(): void
+    {
+        self::assertEquals(
+            '<select name="size"><optgroup label="sizes"><optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;normal"><option value="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m</option><option value="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l</option></optgroup><optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;large"><option value="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xl</option><option value="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxl</option></optgroup></optgroup></select>',
+            Form::select(
+                'size',
+                [
+                    'sizes' => ['normal' => ['m', 'l'], 'large' => ['xl', 'xxl']],
+                ]
             )
         );
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Zaphyr\Utils\Filter;

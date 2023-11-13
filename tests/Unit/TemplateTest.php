@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Zaphyr\Utils\Exceptions\UtilsException;
@@ -14,7 +14,7 @@ class TemplateTest extends TestCase
     {
         self::assertEquals(
             "<p>foo</p>\n",
-            Template::render(__DIR__ . '/TestAssets/template.html', ['value' => 'foo'])
+            Template::render(dirname(__DIR__) . '/TestAssets/template.html', ['value' => 'foo'])
         );
     }
 
@@ -23,7 +23,7 @@ class TemplateTest extends TestCase
         self::assertEquals(
             "<p>&lt;script&gt;alert(&quot;Hello, world!&quot;);&lt;/script&gt;</p>\n",
             Template::render(
-                __DIR__ . '/TestAssets/template.html',
+                dirname(__DIR__) . '/TestAssets/template.html',
                 ['value' => '<script>alert("Hello, world!");</script>']
             )
         );
@@ -33,7 +33,7 @@ class TemplateTest extends TestCase
     {
         self::assertEquals(
             "<p>%value%</p>\n",
-            Template::render(__DIR__ . '/TestAssets/template.html')
+            Template::render(dirname(__DIR__) . '/TestAssets/template.html')
         );
     }
 
@@ -48,7 +48,7 @@ class TemplateTest extends TestCase
     {
         $this->expectException(UtilsException::class);
         Template::render(
-            __DIR__ . '/TestAssets/template.html',
+            dirname(__DIR__) . '/TestAssets/template.html',
             [
                 'value' => [
                     'foo' => 'bar',

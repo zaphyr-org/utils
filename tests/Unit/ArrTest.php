@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;

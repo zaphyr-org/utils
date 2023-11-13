@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\UtilsTests;
+namespace Zaphyr\UtilsTests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -64,7 +64,7 @@ class ClassFinderTest extends TestCase
 
     public function testGetNamespaceFromFile(): void
     {
-        self::assertSame('Zaphyr\UtilsTests', ClassFinder::getNamespaceFromFile(__FILE__));
+        self::assertSame('Zaphyr\UtilsTests\Unit', ClassFinder::getNamespaceFromFile(__FILE__));
     }
 
     public function testGetNamespaceFromFileReturnsNullWhenNoNamespaceIsPresent(): void
