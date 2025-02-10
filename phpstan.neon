@@ -5,7 +5,4 @@ parameters:
         - src
     parallel:
         maximumNumberOfProcesses: 1
-    checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
-    ignoreErrors:
-        - '%Parameter #1 \$[a-zA-Z]+ of static method Zaphyr\\Utils\\Math::[\s\S]+\(\) expects float|int|numeric-string, [a-zA-Z0-9]+ given.%'

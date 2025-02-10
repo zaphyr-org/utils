@@ -41,9 +41,9 @@ class Str
     /**
      * @param string $string
      *
-     * @return array<mixed>
+     * @return array<int, string>|false
      */
-    public static function toArray(string $string): array
+    public static function toArray(string $string): array|bool
     {
         return preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
@@ -211,8 +211,9 @@ class Str
         }
 
         $string = static::subString($string, 0, $length + 1);
+        $lastPosition = static::lastPos($string, ' ');
 
-        return static::subString($string, 0, static::lastPos($string, ' ')) . $append;
+        return static::subString($string, 0, is_int($lastPosition) ? $lastPosition : null) . $append;
     }
 
     /**

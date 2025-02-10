@@ -159,9 +159,15 @@ class File
      *
      * @return int|null
      */
-    public static function size(string $path): int|null
+    public static function size(string $path): ?int
     {
-        return file_exists($path) ? filesize($path) : null;
+        if (file_exists($path)) {
+            $filesize = filesize($path);
+
+            return is_int($filesize) ? $filesize : null;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -200,9 +206,15 @@ class File
      *
      * @return int|null
      */
-    public static function lastModified(string $path): int|null
+    public static function lastModified(string $path): ?int
     {
-        return file_exists($path) ? filemtime($path) : null;
+        if (file_exists($path)) {
+            $filetime = filemtime($path);
+
+            return is_int($filetime) ? $filetime : null;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -397,9 +409,9 @@ class File
      * @param string $contents
      * @param bool   $lock
      *
-     * @return int
+     * @return int|false
      */
-    public static function put(string $file, string $contents, bool $lock = false): int
+    public static function put(string $file, string $contents, bool $lock = false): int|false
     {
         return file_put_contents($file, $contents, $lock ? LOCK_EX : 0);
     }
@@ -431,10 +443,10 @@ class File
      * @param string $contents
      *
      * @throws FileNotFoundException
-     * @return int
+     * @return int|false
      *
      */
-    public static function prepend(string $file, string $contents): int
+    public static function prepend(string $file, string $contents): int|false
     {
         if (file_exists($file)) {
             return static::put($file, $contents . static::read($file));
@@ -447,9 +459,9 @@ class File
      * @param string $file
      * @param string $contents
      *
-     * @return int
+     * @return int|false
      */
-    public static function append(string $file, string $contents): int
+    public static function append(string $file, string $contents): int|false
     {
         return file_put_contents($file, $contents, FILE_APPEND);
     }
@@ -504,9 +516,9 @@ class File
      * @param mixed  $contents
      * @param bool   $lock
      *
-     * @return int
+     * @return int|false
      */
-    public static function serialize(string $file, mixed $contents, bool $lock = false): int
+    public static function serialize(string $file, mixed $contents, bool $lock = false): int|false
     {
         return static::put($file, serialize($contents), $lock);
     }

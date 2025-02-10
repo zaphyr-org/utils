@@ -139,9 +139,9 @@ class Math
      * @param array<int> $numbers
      * @param int|null   $id
      *
-     * @return array<int>
+     * @return array<int, array<int, int>|int>
      */
-    public static function combinations(array $numbers, int|null $id = null): array
+    public static function combinations(array $numbers, ?int $id = null): array
     {
         $combinations = [];
         $count = count($numbers);
@@ -162,9 +162,9 @@ class Math
      * @param numeric $number
      * @param int     $min
      *
-     * @return bool|float|int
+     * @return bool|float|int|string
      */
-    public static function min(float|int|string $number, int $min): bool|float|int
+    public static function min(float|int|string $number, int $min): bool|float|int|string
     {
         if (!static::isFloat($number)) {
             return false;
@@ -181,9 +181,9 @@ class Math
      * @param numeric $number
      * @param int     $max
      *
-     * @return bool|float|int
+     * @return bool|float|int|string
      */
-    public static function max(float|int|string $number, int $max): bool|float|int
+    public static function max(float|int|string $number, int $max): bool|float|int|string
     {
         if (!static::isFloat($number)) {
             return false;
@@ -207,7 +207,7 @@ class Math
     }
 
     /**
-     * @param numeric $number
+     * @param float|int|string $number
      *
      * @return bool
      */

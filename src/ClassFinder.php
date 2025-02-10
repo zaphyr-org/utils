@@ -17,12 +17,15 @@ class ClassFinder
     public static function getClassesFromDirectory(string $directory): array
     {
         $classes = [];
+        $files = glob($directory . '/*.php');
 
-        foreach (glob($directory . '/*.php') as $filename) {
-            $className = self::getClassBasename($filename);
-            $namespace = self::getNamespaceFromFile($filename);
+        if (is_array($files)) {
+            foreach ($files as $filename) {
+                $className = self::getClassBasename($filename);
+                $namespace = self::getNamespaceFromFile($filename);
 
-            $classes[] = $namespace . '\\' . $className;
+                $classes[] = $namespace . '\\' . $className;
+            }
         }
 
         return $classes;

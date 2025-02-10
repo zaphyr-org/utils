@@ -22,8 +22,8 @@ class Arr
     }
 
     /**
-     * @param ArrayAccess|array<mixed> $array
-     * @param string|int               $key
+     * @param ArrayAccess<string|int, mixed>|array<mixed> $array
+     * @param string|int                                  $key
      *
      * @return bool
      */
@@ -77,13 +77,13 @@ class Arr
     }
 
     /**
-     * @param ArrayAccess|array<string, mixed> $array
-     * @param string|null                      $key
-     * @param mixed                            $default
+     * @param ArrayAccess<string|int, mixed>|array<string, mixed> $array
+     * @param string|null                                         $key
+     * @param mixed                                               $default
      *
      * @return mixed
      */
-    public static function get(ArrayAccess|array $array, string|null $key = null, mixed $default = null): mixed
+    public static function get(ArrayAccess|array $array, ?string $key = null, mixed $default = null): mixed
     {
         if ($key === null) {
             return $array;
@@ -149,8 +149,8 @@ class Arr
     }
 
     /**
-     * @param ArrayAccess|array<string, mixed> $array
-     * @param string|string[]                  $key
+     * @param ArrayAccess<string|int, mixed>|array<string, mixed> $array
+     * @param string|string[]                                     $key
      *
      * @return bool
      */
