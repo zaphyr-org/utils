@@ -63,7 +63,7 @@ class Timezone
      *
      * @return string|null
      */
-    public static function getTimezone(string $continent, string $city): string|null
+    public static function getTimezone(string $continent, string $city): ?string
     {
         return self::getTimezonesByContinent($continent)[$city] ?? null;
     }

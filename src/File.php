@@ -69,7 +69,7 @@ class File
      *
      * @return string|null
      */
-    public static function name(string $path): string|null
+    public static function name(string $path): ?string
     {
         $info = static::info($path, PATHINFO_FILENAME);
 
@@ -81,7 +81,7 @@ class File
      *
      * @return string|null
      */
-    public static function basename(string $path): string|null
+    public static function basename(string $path): ?string
     {
         $info = static::info($path, PATHINFO_BASENAME);
 
@@ -93,7 +93,7 @@ class File
      *
      * @return string|null
      */
-    public static function dirname(string $path): string|null
+    public static function dirname(string $path): ?string
     {
         $info = static::info($path, PATHINFO_DIRNAME);
 
@@ -105,7 +105,7 @@ class File
      *
      * @return string|null
      */
-    public static function extension(string $file): string|null
+    public static function extension(string $file): ?string
     {
         if (!is_file($file)) {
             return null;
@@ -121,7 +121,7 @@ class File
      *
      * @return string|null
      */
-    public static function type(string $path): string|null
+    public static function type(string $path): ?string
     {
         if (!file_exists($path)) {
             return null;
@@ -137,7 +137,7 @@ class File
      *
      * @return string|null
      */
-    public static function mimeType(string $path): string|null
+    public static function mimeType(string $path): ?string
     {
         if (!file_exists($path)) {
             return null;
@@ -175,7 +175,7 @@ class File
      *
      * @return string|null
      */
-    public static function hash(string $file): string|null
+    public static function hash(string $file): ?string
     {
         if (!is_file($file)) {
             return null;
@@ -192,7 +192,7 @@ class File
      *
      * @return bool|string
      */
-    public static function chmod(string $file, int|null $mode = null): bool|string
+    public static function chmod(string $file, ?int $mode = null): bool|string
     {
         if ($mode) {
             return chmod($file, $mode);
@@ -243,7 +243,7 @@ class File
      *
      * @return string[]|null
      */
-    public static function glob(string $pattern, int $flags = 0): array|null
+    public static function glob(string $pattern, int $flags = 0): ?array
     {
         $results = glob($pattern, $flags);
 
@@ -260,7 +260,7 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function files(string $directory, bool $hidden = false): array|null
+    public static function files(string $directory, bool $hidden = false): ?array
     {
         if (!is_dir($directory)) {
             return null;
@@ -290,7 +290,7 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function allFiles(string $directory, bool $hidden = false): array|null
+    public static function allFiles(string $directory, bool $hidden = false): ?array
     {
         if (!is_dir($directory)) {
             return null;
@@ -319,7 +319,7 @@ class File
      *
      * @return SplFileInfo[]|null
      */
-    public static function directories(string $directory, bool $hidden = false): array|null
+    public static function directories(string $directory, bool $hidden = false): ?array
     {
         if (!is_dir($directory)) {
             return null;
@@ -393,7 +393,7 @@ class File
      * @return string|null
      *
      */
-    public static function read(string $file): string|null
+    public static function read(string $file): ?string
     {
         if (!is_file($file)) {
             throw new FileNotFoundException('The file "' . $file . '" does not exist');
@@ -616,7 +616,7 @@ class File
      *
      * @return bool
      */
-    public static function copyDirectory(string $directory, string $destination, int|null $options = null): bool
+    public static function copyDirectory(string $directory, string $destination, ?int $options = null): bool
     {
         if (!is_dir($directory)) {
             return false;

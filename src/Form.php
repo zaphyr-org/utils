@@ -83,7 +83,7 @@ class Form
      * @internal
      * @deprecated This method will be set to protected in v3.0
      */
-    public static function getAction(array $options): string|null
+    public static function getAction(array $options): ?string
     {
         return $options['action'] ?? null;
     }
@@ -124,7 +124,7 @@ class Form
      */
     public static function label(
         string $name,
-        string|null $value = null,
+        ?string $value = null,
         array $options = [],
         bool $escapeHTML = true
     ): string {
@@ -146,7 +146,7 @@ class Form
      *
      * @return string
      */
-    protected static function formatLabel(string $name, string|null $value = null): string
+    protected static function formatLabel(string $name, ?string $value = null): string
     {
         return $value ?: ucwords(str_replace(['_', '-'], ' ', $name));
     }
@@ -159,7 +159,7 @@ class Form
      *
      * @return string
      */
-    public static function input(string $type, string|null $name, mixed $value = null, array $options = []): string
+    public static function input(string $type, ?string $name, mixed $value = null, array $options = []): string
     {
         if (!isset($options['name'])) {
             $options['name'] = $name;
@@ -179,7 +179,7 @@ class Form
      *
      * @return string|null
      */
-    protected static function getIdAttribute(string|null $name, array $options): string|null
+    protected static function getIdAttribute(?string $name, array $options): ?string
     {
         if (array_key_exists('id', $options)) {
             return $options['id'];
@@ -199,7 +199,7 @@ class Form
      *
      * @return string
      */
-    public static function text(string $name, string|null $value = null, array $options = []): string
+    public static function text(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('text', $name, $value, $options);
     }
@@ -222,7 +222,7 @@ class Form
      *
      * @return string
      */
-    public static function range(string $name, string|null $value = null, array $options = []): string
+    public static function range(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('range', $name, $value, $options);
     }
@@ -234,7 +234,7 @@ class Form
      *
      * @return string
      */
-    public static function hidden(string $name, string|null $value = null, array $options = []): string
+    public static function hidden(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('hidden', $name, $value, $options);
     }
@@ -246,7 +246,7 @@ class Form
      *
      * @return string
      */
-    public static function search(string $name, string|null $value = null, array $options = []): string
+    public static function search(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('search', $name, $value, $options);
     }
@@ -258,7 +258,7 @@ class Form
      *
      * @return string
      */
-    public static function email(string $name, string|null $value = null, array $options = []): string
+    public static function email(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('email', $name, $value, $options);
     }
@@ -270,7 +270,7 @@ class Form
      *
      * @return string
      */
-    public static function tel(string $name, string|null $value = null, array $options = []): string
+    public static function tel(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('tel', $name, $value, $options);
     }
@@ -282,7 +282,7 @@ class Form
      *
      * @return string
      */
-    public static function number(string $name, string|null $value = null, array $options = []): string
+    public static function number(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('number', $name, $value, $options);
     }
@@ -396,7 +396,7 @@ class Form
      *
      * @return string
      */
-    public static function url(string $name, string|null $value = null, array $options = []): string
+    public static function url(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('url', $name, $value, $options);
     }
@@ -433,7 +433,7 @@ class Form
      *
      * @return string
      */
-    public static function color(string $name, string|null $value = null, array $options = []): string
+    public static function color(string $name, ?string $value = null, array $options = []): string
     {
         return self::input('color', $name, $value, $options);
     }
@@ -455,7 +455,7 @@ class Form
      *
      * @return string
      */
-    public static function submit(string|null $value = null, array $options = []): string
+    public static function submit(?string $value = null, array $options = []): string
     {
         return self::input('submit', null, $value, $options);
     }
@@ -549,7 +549,7 @@ class Form
      */
     public static function textarea(
         string $name,
-        string|null $value = null,
+        ?string $value = null,
         array $options = [],
         bool $escapeHTML = true
     ): string {

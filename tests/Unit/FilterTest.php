@@ -67,7 +67,7 @@ class FilterTest extends TestCase
      *
      * @dataProvider floatDataProvider
      */
-    public function testFloat(float $expected, $actual, int $round = null): void
+    public function testFloat(float $expected, $actual, ?int $round = null): void
     {
         if (null === $round) {
             self::assertSame($expected, Filter::float($actual));

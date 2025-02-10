@@ -259,7 +259,7 @@ class Country
      *
      * @return string|null
      */
-    public static function getNameByIsoCode(string $isoCode): string|null
+    public static function getNameByIsoCode(string $isoCode): ?string
     {
         return static::$countries[$isoCode] ?? null;
     }
