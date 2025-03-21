@@ -22,11 +22,12 @@ composer require zaphyr-org/utils
 
 ## Documentation
 
-You can read the full documentation [here](https://zaphyr.org/docs/2.x/repositories/utils).
+You can read the full documentation [here](https://zaphyr.org/docs/repositories/latest/utils).
 
 ## Issues
 
-Bug reports and feature requests can be submitted on the [GitHub Issue Tracker](https://github.com/zaphyr-org/utils/issues).
+Bug reports and feature requests can be submitted on
+the [GitHub Issue Tracker](https://github.com/zaphyr-org/utils/issues).
 
 ## Security
 
