@@ -165,9 +165,9 @@ class File
             $filesize = filesize($path);
 
             return is_int($filesize) ? $filesize : null;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -212,9 +212,9 @@ class File
             $filetime = filemtime($path);
 
             return is_int($filetime) ? $filetime : null;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -352,9 +352,9 @@ class File
     protected static function isHidden(string $path): bool
     {
         $partials = explode(DIRECTORY_SEPARATOR, $path);
-        $path = end($partials);
+        $parts = end($partials);
 
-        return $path[0] === '.';
+        return $parts[0] === '.';
     }
 
     /**
@@ -388,20 +388,50 @@ class File
 
     /**
      * @param string $file
+     * @param bool   $lock
      *
      * @throws FileNotFoundException
      * @return string|null
      *
      */
-    public static function read(string $file): ?string
+    public static function read(string $file, bool $lock = false): ?string
     {
         if (!is_file($file)) {
             throw new FileNotFoundException('The file "' . $file . '" does not exist');
         }
 
-        $result = file_get_contents($file);
+        $result = $lock ? static::readShared($file) : file_get_contents($file);
 
         return is_string($result) ? $result : null;
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return string|null
+     */
+    protected static function readShared(string $file): ?string
+    {
+        $contents = null;
+        $handle = fopen($file, 'rb');
+
+        if ($handle) {
+            try {
+                if (flock($handle, LOCK_SH)) {
+                    clearstatcache(true, $file);
+
+                    $size = static::size($file);
+                    $length = $size !== null && $size > 0 ? $size : 1;
+                    $contents = fread($handle, $length);
+
+                    flock($handle, LOCK_UN);
+                }
+            } finally {
+                fclose($handle);
+            }
+        }
+
+        return $contents ?: null;
     }
 
     /**
@@ -426,16 +456,16 @@ class File
     {
         clearstatcache(true, $path);
 
-        $path = realpath($path) ?: $path;
-        $tempPath = tempnam(dirname($path), basename($path));
+        $pathname = realpath($path) ?: $path;
+        $tempPath = tempnam(dirname($pathname), basename($pathname));
 
         if (!$tempPath) {
-            throw new FileNotFoundException('The path . "' . $path . '" does not exist');
+            throw new FileNotFoundException('The path . "' . $pathname . '" does not exist');
         }
 
         chmod($tempPath, 0777 - umask());
         file_put_contents($tempPath, $contents);
-        rename($tempPath, $path);
+        rename($tempPath, $pathname);
     }
 
     /**
@@ -458,12 +488,13 @@ class File
     /**
      * @param string $file
      * @param string $contents
+     * @param bool   $lock
      *
      * @return int|false
      */
-    public static function append(string $file, string $contents): int|false
+    public static function append(string $file, string $contents, bool $lock = false): int|false
     {
-        return file_put_contents($file, $contents, FILE_APPEND);
+        return file_put_contents($file, $contents, FILE_APPEND | ($lock ? LOCK_EX : 0));
     }
 
     /**
@@ -524,16 +555,18 @@ class File
     }
 
     /**
-     * @param string $file
+     * @param string       $file
+     * @param bool         $lock
+     * @param array<mixed> $options
      *
      * @throws FileNotFoundException
      * @return mixed
      */
-    public static function unserialize(string $file): mixed
+    public static function unserialize(string $file, bool $lock = false, array $options = []): mixed
     {
-        $contents = static::read($file);
+        $contents = static::read($file, $lock);
 
-        return $contents !== null ? unserialize($contents) : null;
+        return $contents !== null ? unserialize($contents, $options) : null;
     }
 
     /**

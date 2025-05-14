@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Zaphyr\UtilsTests\Unit;
 
+use __PHP_Incomplete_Class;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
+use stdClass;
 use Zaphyr\Utils\Exceptions\FileNotFoundException;
 use Zaphyr\Utils\File;
 
@@ -471,6 +473,13 @@ class FileTest extends TestCase
         self::assertFalse(function_exists('bar'));
     }
 
+    public function testGetRequireOnceThrowsExceptionOnNonExistingFile(): void
+    {
+        $this->expectException(FileNotFoundException::class);
+
+        File::getRequireOnce(__DIR__ . '/Invalid.php');
+    }
+
     /**
      * ------------------------------------------
      * READ
@@ -484,18 +493,18 @@ class FileTest extends TestCase
         self::assertEquals('foo', File::read($file));
     }
 
+    public function testReadWithLock(): void
+    {
+        file_put_contents($file = $this->tempDir . '/file.txt', 'foo');
+
+        self::assertEquals('foo', File::read($file, true));
+    }
+
     public function testReadThrowsExceptionOnNonExistingFile(): void
     {
         $this->expectException(FileNotFoundException::class);
 
         File::read(__DIR__ . '/invalid.txt');
-    }
-
-    public function testGetRequireOnceThrowsExceptionOnNonExistingFile(): void
-    {
-        $this->expectException(FileNotFoundException::class);
-
-        File::getRequireOnce(__DIR__ . '/Invalid.php');
     }
 
     /**
@@ -651,6 +660,18 @@ class FileTest extends TestCase
     {
         self::assertIsInt(File::serialize($file = $this->tempDir . '/foo', $data = ['foo' => 'bar']));
         self::assertEquals($data, File::unserialize($file));
+    }
+
+    public function testUnserializeWithOptions(): void
+    {
+        $testObject = new stdClass();
+        $testObject->name = 'Test';
+
+        File::serialize($file = $this->tempDir . '/foo', $testObject);
+
+        $result = File::unserialize($file, options: ['allowed_classes' => false]);
+
+        self::assertInstanceOf(__PHP_Incomplete_Class::class, $result);
     }
 
     /**
