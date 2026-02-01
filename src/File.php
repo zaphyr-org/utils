@@ -8,6 +8,7 @@ use ErrorException;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RuntimeException;
 use SplFileInfo;
 use Zaphyr\Utils\Exceptions\FileNotFoundException;
 
@@ -450,10 +451,14 @@ class File
      * @param string $path
      * @param string $contents
      *
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException|RuntimeException
      */
     public static function replace(string $path, string $contents): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            throw new RuntimeException('The replace() method is not supported on Windows systems');
+        }
+
         clearstatcache(true, $path);
 
         $pathname = realpath($path) ?: $path;
