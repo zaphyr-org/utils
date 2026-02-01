@@ -527,6 +527,10 @@ class FileTest extends TestCase
 
     public function testReplace(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Windows does not work on Windows');
+        }
+
         mkdir($symlinkDir = $this->tempDir . '/symlink_dir');
         symlink($file = $this->tempDir . '/file.txt', $symlinkFile = $this->tempDir . '/symlink.txt');
         chmod($symlinkDir, 0555);
