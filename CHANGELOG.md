@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file,
 in reverse chronological order by release.
 
+## [v2.3.0](https://github.com/zaphyr-org/utils/compare/2.2.3...2.3.0) [2026-02-01]
+
+### New:
+
+* Added GitHub Actions workflow
+* Added [PSR-20](https://www.php-fig.org/psr/psr-20/) Clock helper class
+
+### Fixed:
+
+* Fixed type casting issue introduced in PHP 8.5 in `Math::isInteger` method
+* Fixed `ClassFinder::getClassesFromDirectory` unit tests
+* Fixed `FileTest::testReplace` on Windows machines
+* Added `RuntimeException` on File::replace method for Windows machines
+
 ## [v2.2.3](https://github.com/zaphyr-org/utils/compare/2.2.2...2.2.3) [2025-05-14]
 
 ### New:
