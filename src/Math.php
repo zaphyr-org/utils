@@ -203,7 +203,10 @@ class Math
      */
     public static function isInteger(float|int|string $number): bool
     {
-        return is_numeric($number) && (string)(int)$number === (string)$number;
+        // The @ silence operator may appear odd in this context,
+        // but it is necessary to avoid enforced type casting issues
+        // introduced in PHP 8.5.0 and newer versions.
+        return is_numeric($number) && (string)@(int)$number === (string)$number;
     }
 
     /**
