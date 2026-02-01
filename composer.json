@@ -29,6 +29,7 @@
         "ext-dom": "*",
         "ext-fileinfo": "*",
         "ext-mbstring": "*",
+        "psr/clock": "^1.0",
         "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
