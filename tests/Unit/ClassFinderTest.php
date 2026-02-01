@@ -25,7 +25,7 @@ class ClassFinderTest extends TestCase
                 UtilsException::class
             ],
             ClassFinder::getClassesFromDirectory(
-                '/Users/merloxx/PhpstormProjects/zaphyr/repositories/utils/src/Exceptions'
+                dirname(__DIR__, 3) . '/utils/src/Exceptions'
             )
         );
     }
