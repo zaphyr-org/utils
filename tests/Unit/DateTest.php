@@ -169,7 +169,7 @@ class DateTest extends TestCase
     {
         self::assertTrue(Date::isThisMonth('+0 month'));
         self::assertFalse(Date::isThisMonth('+1 month'));
-        self::assertFalse(Date::isThisMonth('-1 month'));
+        self::assertFalse(Date::isThisMonth('-1 month first day of this month'));
     }
 
     /**
